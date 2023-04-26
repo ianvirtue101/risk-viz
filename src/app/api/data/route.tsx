@@ -3,13 +3,13 @@ import fs from "fs";
 import path from "path";
 import csv from "csv-parser";
 
-interface DataItem {
-  AssetName: string;
-  Lat: number;
-  Long: number;
-  BusinessCategory: string;
-  RiskRating: string;
-  RiskFactors: string;
+export interface DataItem {
+  assetName: string;
+  lat: number;
+  long: number;
+  businessCategory: string;
+  riskRating: number;
+  riskFactors: Record<string, number>;
 }
 
 export async function GET() {
