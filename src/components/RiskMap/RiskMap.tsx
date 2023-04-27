@@ -1,20 +1,23 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import MapBox from "../MapBox/MapBox";
-import { DataItem } from "../../app/api/data/route";
+import { DataItem } from "../../app/api/types";
 
 const RiskMap: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("/api/data");
-      const loadedData: DataItem[] = await response.json();
-      setData(loadedData);
+      try {
+        const response = await fetch("/api/data.ts");
+        const loadedData: DataItem[] = await response.json();
+        setData(loadedData);
+      } catch (error) {
+        console.error(`Error fetching data: ${error.message}`);
+      }
     }
     fetchData();
   }, []);
-
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <MapBox data={data} />
