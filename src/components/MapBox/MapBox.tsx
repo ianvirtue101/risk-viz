@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import mapboxgl, { Marker } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { DataItem } from "../../app/api/route";
+import { DataItem } from "@/app/api/types";
 
 const Token =
   process.env.NEXT_PUBLIC_MAPBOX_TOKEN ||
@@ -44,12 +44,16 @@ const MapBox: React.FC<{ data: DataItem[] }> = ({ data }) => {
 
     // Iterate through the data and create a marker for each item
     data.forEach((item) => {
-      const marker = new Marker()
-        .setLngLat([item.long, item.lat])
-        .addTo(mapRef.current!);
-      markersRef.current.push(marker);
+      // Check if both longitude and latitude are valid numbers
+      if (!isNaN(item.long) && !isNaN(item.lat)) {
+        const marker = new Marker()
+          .setLngLat([item.long, item.lat]) // Updated property names here
+          .addTo(mapRef.current!);
+        markersRef.current.push(marker);
+      } else {
+        console.warn(`Invalid coordinates for item: ${JSON.stringify(item)}`);
+      }
     });
-
     console.log(data);
   }, [data]);
 

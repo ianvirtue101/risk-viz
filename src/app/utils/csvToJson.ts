@@ -10,10 +10,12 @@ export async function parseCsvToJson(
     csvtojson()
       .fromFile(csvFilePath)
       .on("json", (jsonObj) => {
+        console.log("JSON object:", jsonObj); // Add this console log
         jsonArray.push(jsonObj);
       })
       .on("done", (error: Error | undefined) => {
         if (error) reject(error);
+        console.log("JSON array:", jsonArray); // Add this console log
         resolve(jsonArray);
       });
   });
