@@ -1,74 +1,81 @@
 import React, { useEffect, useRef } from "react";
-import mapboxgl, { Marker } from "mapbox-gl";
+import mapboxgl, { LngLatBoundsLike, Marker } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { DataItem } from "@/app/api/types";
+import { DataItem } from "../../app/api/types";
+import clustersKmeans from "@turf/clusters-kmeans";
+import { featureCollection, point } from "@turf/helpers";
 
-const Token =
-  process.env.NEXT_PUBLIC_MAPBOX_TOKEN ||
-  process.env.NEXT_PUBLIC_DEFAULT_ACCESS_TOKEN;
+interface MapBoxProps {
+  data: DataItem[];
+}
 
-mapboxgl.accessToken = Token || "";
-
-const MapBox: React.FC<{ data: DataItem[] }> = ({ data }) => {
-  const mapContainer = useRef<HTMLDivElement>(null);
+const MapBox: React.FC<MapBoxProps> = ({ data }) => {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<Marker[]>([]);
-  console.log(data);
+
+  // Debugging: log the data and the clusteredPoints
+  // console.log("Data:", data);
 
   useEffect(() => {
-    if (!mapContainer.current) return;
-
-    const map = new mapboxgl.Map({
-      accessToken: Token,
-      container: mapContainer.current,
+    // Initialize the map
+    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
+    mapRef.current = new mapboxgl.Map({
+      container: "map",
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [0, 0],
-      zoom: 1,
+      center: [-100.746, 46.8797],
+      zoom: 3,
     });
 
-    mapRef.current = map;
+    // Add navigation controls to the map
+    mapRef.current.addControl(new mapboxgl.NavigationControl(), "top-right");
 
     return () => {
-      // Remove the markers and the map when the component is unmounted
-      markersRef.current.forEach((marker) => marker.remove());
-      map.remove();
+      // Clean up the map
+      if (mapRef.current) {
+        mapRef.current.remove();
+      }
     };
   }, []);
 
   useEffect(() => {
-    if (!mapRef.current || data.length === 0) return;
+    if (mapRef.current && data.length > 0) {
+      // Remove existing markers
+      markersRef.current.forEach((marker) => marker.remove());
+      markersRef.current = [];
 
-    // Remove any existing markers
-    markersRef.current.forEach((marker) => marker.remove());
-    markersRef.current = [];
+      // Convert data to GeoJSON points
+      const points = data.map((item) => point([item.long, item.lat]));
 
-    // Iterate through the data and create a marker for each item
-    data.forEach((item) => {
-      // Check if both longitude and latitude are valid numbers
-      if (!isNaN(item.long) && !isNaN(item.lat)) {
-        const marker = new Marker()
-          .setLngLat([item.long, item.lat]) // Updated property names here
+      // Cluster the points using K-means clustering
+      const clusteredPoints = clustersKmeans(featureCollection(points));
+
+      // Render the clustered markers
+      clusteredPoints.features.forEach((feature: any) => {
+        const [longitude, latitude] = feature.geometry.coordinates;
+        const clusterSize = feature.properties.cluster
+          ? feature.properties.point_count
+          : 1;
+        const markerElement = document.createElement("div");
+        markerElement.className = "cluster-marker";
+        markerElement.style.width = `${10 + 2 * Math.sqrt(clusterSize)}px`;
+        markerElement.style.height = `${10 + 2 * Math.sqrt(clusterSize)}px`;
+        markerElement.style.borderRadius = "50%";
+        markerElement.style.backgroundColor = "rgba(0, 0, 255, 0.6)";
+
+        console.log("Marker coordinates:", longitude, latitude);
+
+        const marker = new Marker({ element: markerElement })
+          .setLngLat([longitude, latitude])
           .addTo(mapRef.current!);
+
         markersRef.current.push(marker);
-      } else {
-        console.warn(`Invalid coordinates for item: ${JSON.stringify(item)}`);
-      }
-    });
-    console.log(data);
+      });
+
+      console.log("Rendering markers:", clusteredPoints.features.length);
+    }
   }, [data]);
 
-  return (
-    <div
-      ref={mapContainer}
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-      }}
-    />
-  );
+  return <div id="map" style={{ width: "100%", height: "100%" }} />;
 };
 
 export default MapBox;

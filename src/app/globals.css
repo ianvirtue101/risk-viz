@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.cluster-marker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.5rem solid red;
+  cursor: pointer;
+}

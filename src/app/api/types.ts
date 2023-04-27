@@ -1,4 +1,5 @@
 export interface DataItem {
+  id: number;
   assetName: string;
   lat: number;
   long: number;
