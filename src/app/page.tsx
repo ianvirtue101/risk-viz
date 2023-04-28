@@ -45,7 +45,8 @@ export default function Home() {
           <h1 className="text-2xl font-semibold text-primary-600 mb-4">
             Climate Risk Map
           </h1>
-          <RiskMap />
+
+          <RiskMap data={data} />
         </div>
         <div className="bg-white rounded-lg p-6 shadow-md mb-8">
           <h1 className="text-2xl font-semibold text-primary-600 mb-4">
