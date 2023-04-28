@@ -11,7 +11,7 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<Marker[]>([]);
   const [markerElements, setMarkerElements] = useState<JSX.Element[]>([]);
-  const [decadeYear, setDecadeYear] = useState(2000);
+  const [decadeYear, setDecadeYear] = useState(2030);
 
   useEffect(() => {
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
@@ -113,7 +113,7 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
             onChange={handleDecadeChange}
             className="block w-full mt-1 bg-white shadow text-gray-800 p-2 rounded"
           >
-            {Array.from({ length: 6 }, (_, i) => 2020 + i * 10).map((year) => (
+            {Array.from({ length: 5 }, (_, i) => 2030 + i * 10).map((year) => (
               <option key={year} value={year}>
                 {year}
               </option>
