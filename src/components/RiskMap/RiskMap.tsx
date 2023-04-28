@@ -57,7 +57,7 @@ const RiskMap: React.FC = () => {
   const displayedData = fetchPage(currentPage, data);
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div className="w-full h-full">
       <MapBox data={displayedData} />
       <Pagination
         totalPages={totalPages}

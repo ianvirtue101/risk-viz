@@ -102,14 +102,17 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
   };
 
   return (
-    <>
-      <div>
-        <div>
-          <label htmlFor="decadeYear">Decade Year: </label>
+    <div className="bg-gray-100 min-h-screen">
+      <div className="container mx-auto px-4 py-6">
+        <div className="mb-4">
+          <label htmlFor="decadeYear" className="block text-gray-800">
+            Decade Year:
+          </label>
           <select
             id="decadeYear"
             value={decadeYear}
             onChange={handleDecadeChange}
+            className="block w-full mt-1 bg-white shadow text-gray-800 p-2 rounded"
           >
             {Array.from({ length: 6 }, (_, i) => 2020 + i * 10).map((year) => (
               <option key={year} value={year}>
@@ -118,11 +121,14 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
             ))}
           </select>
         </div>
+        <div
+          id="map"
+          className="w-full h-[600px] rounded-lg shadow relative mapboxgl-map"
+        >
+          {markerElements}
+        </div>
       </div>
-      <div id="map" style={{ width: "100%", height: "100%" }}>
-        {markerElements}
-      </div>
-    </>
+    </div>
   );
 };
 
