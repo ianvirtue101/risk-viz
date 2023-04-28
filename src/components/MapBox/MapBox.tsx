@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import mapboxgl, { Marker, Popup } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { DataItem } from "../../app/api/types";
-import IndividualMarker from "../IndividualMarker/IndividualMarker";
 
 interface MapBoxProps {
   data: DataItem[];
