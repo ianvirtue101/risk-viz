@@ -4,6 +4,7 @@ import MapBox from "../MapBox/MapBox";
 import { DataItem } from "../../app/api/types";
 import { fetchDataFromStorage } from "../../app/utils/fetchDataFromStorage";
 import Pagination from "../Pagination/Pagination";
+import DataTable from "../DataTable/DataTable";
 
 const itemsPerPage = 100; // Change this value as needed
 
@@ -59,6 +60,7 @@ const RiskMap: React.FC = () => {
   return (
     <div className="w-full h-full">
       <MapBox data={displayedData} />
+      <DataTable data={data} />
       <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
