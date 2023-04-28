@@ -34,7 +34,7 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
 
   useEffect(() => {
     if (!mapRef.current) return;
-  
+
     const newMarkerElements = data
       .filter((item: DataItem) => {
         if (
@@ -52,14 +52,21 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
         const markerElement = document.createElement("div");
         markerElement.style.width = "10px";
         markerElement.style.height = "10px";
-        markerElement.style.backgroundColor = "red";
         markerElement.style.borderRadius = "50%";
-  
+
+        if (item.riskRating < 0.25) {
+          markerElement.style.backgroundColor = "green";
+        } else if (item.riskRating < 0.5) {
+          markerElement.style.backgroundColor = "orange";
+        } else if (item.riskRating < 0.75) {
+          markerElement.style.backgroundColor = "red";
+        }
+
         try {
           const marker = new Marker({ element: markerElement })
             .setLngLat([item.long, item.lat]) // Swap latitude and longitude
             .addTo(mapRef.current!);
-  
+
           markersRef.current.push(marker);
           return null;
         } catch (error) {
@@ -67,12 +74,13 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
           return null;
         }
       });
-  
+
     return () => {
       markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
     };
   }, [mapRef, data]);
+
   return (
     <div id="map" style={{ width: "100%", height: "100%" }}>
       {markerElements}

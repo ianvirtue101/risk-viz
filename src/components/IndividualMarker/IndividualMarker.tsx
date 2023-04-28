@@ -4,9 +4,9 @@ import { Marker, Popup } from "react-map-gl";
 const IndividualMarker = ({ asset, onClick }) => {
   const [showPopup, setShowPopup] = useState(false);
 
-  const latitude = asset.latitude;
-  const longitude = asset.longitude;
-  const riskRating = asset.risk_rating;
+  const latitude = asset.lat;
+  const longitude = asset.long;
+  const riskRating = asset.riskRating;
 
   const getMarkerColor = (riskRating: any) => {
     if (riskRating < 0.25) return "green";
@@ -49,8 +49,8 @@ const IndividualMarker = ({ asset, onClick }) => {
           offset={[0, -10]}
         >
           <div>
-            <p>{asset.asset_name}</p>
-            <p>{asset.business_category}</p>
+            <p>{asset.assetName}</p>
+            <p>{asset.businessCategory}</p>
           </div>
         </Popup>
       )}
