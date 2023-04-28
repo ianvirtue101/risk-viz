@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Marker, Popup } from "react-map-gl";
 
 const IndividualMarker = ({ asset, onClick }) => {
-  const [showPopup, setShowPopup] = useState(false);
-
+  
   const latitude = asset.lat;
   const longitude = asset.long;
   const riskRating = asset.riskRating;

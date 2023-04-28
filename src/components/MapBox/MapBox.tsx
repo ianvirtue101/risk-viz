@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import mapboxgl, { Marker } from "mapbox-gl";
+import mapboxgl, { Marker, Popup } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { DataItem } from "../../app/api/types";
 import IndividualMarker from "../IndividualMarker/IndividualMarker";
@@ -13,6 +12,7 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<Marker[]>([]);
   const [markerElements, setMarkerElements] = useState<JSX.Element[]>([]);
+  const [decadeYear, setDecadeYear] = useState(2000);
 
   useEffect(() => {
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
@@ -37,6 +37,10 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
 
     const newMarkerElements = data
       .filter((item: DataItem) => {
+        // Filter based on the decadeYear
+        if (item.year < decadeYear || item.year >= decadeYear + 10)
+          return false;
+
         if (
           item.lat < -90 ||
           item.lat > 90 ||
@@ -62,9 +66,21 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
           markerElement.style.backgroundColor = "red";
         }
 
+        const popupContent = `
+          <div>
+            <p>${item.assetName}</p>
+            <p>${item.businessCategory}</p>
+          </div>
+        `;
+
+        const popup = new Popup({ offset: 25 })
+          .setHTML(popupContent)
+          .setMaxWidth("300px");
+
         try {
           const marker = new Marker({ element: markerElement })
-            .setLngLat([item.long, item.lat]) // Swap latitude and longitude
+            .setLngLat([item.long, item.lat])
+            .setPopup(popup) // Add the popup to the marker
             .addTo(mapRef.current!);
 
           markersRef.current.push(marker);
@@ -79,12 +95,34 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
       markersRef.current.forEach((marker) => marker.remove());
       markersRef.current = [];
     };
-  }, [mapRef, data]);
+  }, [mapRef, data, decadeYear]);
+
+  const handleDecadeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setDecadeYear(Number(event.target.value));
+  };
 
   return (
-    <div id="map" style={{ width: "100%", height: "100%" }}>
-      {markerElements}
-    </div>
+    <>
+      <div>
+        <div>
+          <label htmlFor="decadeYear">Decade Year: </label>
+          <select
+            id="decadeYear"
+            value={decadeYear}
+            onChange={handleDecadeChange}
+          >
+            {Array.from({ length: 6 }, (_, i) => 2020 + i * 10).map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div id="map" style={{ width: "100%", height: "100%" }}>
+        {markerElements}
+      </div>
+    </>
   );
 };
 
