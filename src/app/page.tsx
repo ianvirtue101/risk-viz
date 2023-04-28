@@ -2,11 +2,20 @@
 import React, { useEffect, useState } from "react";
 import RiskMap from "@/components/RiskMap/RiskMap";
 import DataTable from "@/components/DataTable/DataTable";
+import LineGraph from "@/components/LineGraph/LineGraph";
 import { fetchDataFromStorage } from "@/app/utils/fetchDataFromStorage";
 import { DataItem } from "@/app/api/types";
 
 export default function Home() {
   const [data, setData] = useState<DataItem[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [selectedDataPoint, setSelectedDataPoint] = useState<null | {
+    riskRating: number;
+    assetName: string;
+    riskFactors: any; // Update the type according to your data structure
+    year: number;
+  }>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -38,6 +47,68 @@ export default function Home() {
     fetchData();
   }, []);
 
+  function aggregateDataByCategoryAndYear(data) {
+    const aggregatedData = data.reduce((acc, item) => {
+      const key = `${item.businessCategory}-${item.year}`;
+
+      if (!acc[key]) {
+        acc[key] = {
+          businessCategory: item.businessCategory,
+          year: item.year,
+          totalRiskRating: item.riskRating,
+          count: 1,
+        };
+      } else {
+        acc[key].totalRiskRating += item.riskRating;
+        acc[key].count += 1;
+      }
+
+      return acc;
+    }, {});
+
+    const groupedData = Object.values(aggregatedData);
+
+    const labels = Array.from(
+      new Set(groupedData.map((item) => item.businessCategory))
+    );
+    const values = labels.map((category) => {
+      const filteredData = groupedData.filter(
+        (item) => item.businessCategory === category
+      );
+      const totalRiskRating = filteredData.reduce(
+        (sum, item) => sum + item.totalRiskRating,
+        0
+      );
+      const averageRiskRating = totalRiskRating / filteredData.length;
+      return averageRiskRating;
+    });
+
+    return { labels, values };
+  }
+
+  const { labels: labelsArray, values: valuesArray } =
+    aggregateDataByCategoryAndYear(data);
+
+  const filteredDataArray = labelsArray.map((category) => {
+    const filteredData = data.filter(
+      (item: DataItem) => item.businessCategory === category
+    );
+
+    // Assuming that you want to calculate the average risk rating for each category
+    const totalRiskRating = filteredData.reduce(
+      (sum, item: DataItem) => sum + item.riskRating,
+      0
+    );
+    const averageRiskRating = totalRiskRating / filteredData.length;
+
+    return {
+      riskRating: averageRiskRating,
+      assetName: filteredData[0].assetName, // Update this logic according to your data structure
+      riskFactors: filteredData[0].riskFactors, // Update this logic according to your data structure
+      year: filteredData[0].year, // Update this logic according to your data structure
+    };
+  });
+
   return (
     <div className="w-full h-full bg-gray-100 p-8">
       <div className="container mx-auto">
@@ -45,8 +116,12 @@ export default function Home() {
           <h1 className="text-2xl font-semibold text-primary-600 mb-4">
             Climate Risk Map
           </h1>
-
           <RiskMap data={data} />
+          <LineGraph
+            data={{ labels: labelsArray, values: valuesArray }}
+            filteredData={filteredDataArray}
+            setSelectedDataPoint={setSelectedDataPoint}
+          />
         </div>
         <div className="bg-white rounded-lg p-6 shadow-md mb-8">
           <h1 className="text-2xl font-semibold text-primary-600 mb-4">
