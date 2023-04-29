@@ -28,19 +28,19 @@ interface LineGraphProps {
     labels: string[];
     values: number[];
   };
-  filteredData: Array<{
+  setSelectedDataPoint: (dataPoint: any) => void;
+  filteredData?: Array<{
     riskRating: number;
     assetName: string;
     riskFactors: any; // Update the type according to your data structure
     year: number;
   }>;
-  setSelectedDataPoint: (dataPoint: any) => void;
 }
 
 const LineGraph: React.FC<LineGraphProps> = ({
   data,
-  filteredData,
   setSelectedDataPoint,
+  filteredData = [],
 }) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const [chartInstance, setChartInstance] = useState<Chart | null>(null);
@@ -50,70 +50,83 @@ const LineGraph: React.FC<LineGraphProps> = ({
       const ctx = chartRef.current.getContext("2d");
 
       if (ctx) {
-        if (chartInstance) {
-          chartInstance.destroy();
-        }
-        const newChartInstance = new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: data.labels,
-            datasets: [
-              {
-                label: "Average Risk Rating",
-                data: data.values,
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
-                borderColor: "rgba(75, 192, 192, 1)",
-                borderWidth: 2,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
+        if (!chartInstance) {
+          const newChartInstance = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: data.labels,
+              datasets: [
+                {
+                  label: "Average Risk Rating",
+                  data: data.values,
+                  backgroundColor: "rgba(75, 192, 192, 0.2)",
+                  borderColor: "rgba(75, 192, 192, 1)",
+                  borderWidth: 2,
+                },
+              ],
             },
-            plugins: {
-              tooltip: {
-                enabled: true,
-                callbacks: {
-                  title: function (context) {
-                    const index = context[0].dataIndex;
-                    return filteredData[index].assetName;
-                  },
-                  label: function (context) {
-                    const index = context.dataIndex;
-                    const dataPoint = filteredData[index];
-                    return [
-                      `Risk Rating: ${dataPoint.riskRating}`,
-                      `Risk Factors: ${JSON.stringify(dataPoint.riskFactors)}`,
-                      `Year: ${dataPoint.year}`,
-                    ];
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                },
+              },
+              plugins: {
+                tooltip: {
+                  enabled: true,
+                  callbacks: {
+                    title: function (context) {
+                      if (filteredData.length) {
+                        const index = context[0].dataIndex;
+                        return filteredData[index].assetName;
+                      }
+                      return "";
+                    },
+                    label: function (context) {
+                      if (filteredData.length) {
+                        const index = context.dataIndex;
+                        const dataPoint = filteredData[index];
+                        return [
+                          `Risk Rating: ${dataPoint.riskRating}`,
+                          `Risk Factors: ${JSON.stringify(
+                            dataPoint.riskFactors
+                          )}`,
+                          `Year: ${dataPoint.year}`,
+                        ];
+                      }
+                      return "";
+                    },
                   },
                 },
               },
-            },
-            onClick: (event) => {
-              const elements = newChartInstance.getElementsAtEventForMode(
-                event,
-                "nearest",
-                { intersect: true },
-                true
-              );
+              onClick: (event) => {
+                if (filteredData.length) {
+                  const elements = newChartInstance.getElementsAtEventForMode(
+                    event,
+                    "nearest",
+                    { intersect: true },
+                    true
+                  );
 
-              if (elements.length) {
-                const index = elements[0].index;
-                setSelectedDataPoint(filteredData[index]);
-              } else {
-                setSelectedDataPoint(null);
-              }
+                  if (elements.length) {
+                    const index = elements[0].index;
+                    setSelectedDataPoint(filteredData[index]);
+                  } else {
+                    setSelectedDataPoint(null);
+                  }
+                }
+              },
             },
-          },
-        });
+          });
 
-        setChartInstance(newChartInstance);
+          setChartInstance(newChartInstance);
+        } else {
+          chartInstance.data.labels = data.labels;
+          chartInstance.data.datasets[0].data = data.values;
+          chartInstance.update();
+        }
       }
     }
   }, [chartRef, data, filteredData]);

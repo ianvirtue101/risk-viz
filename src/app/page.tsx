@@ -5,17 +5,25 @@ import DataTable from "@/components/DataTable/DataTable";
 import LineGraph from "@/components/LineGraph/LineGraph";
 import { fetchDataFromStorage } from "@/app/utils/fetchDataFromStorage";
 import { DataItem } from "@/app/api/types";
+import BarChart from "@/components/BarChart/BarChart";
+
+interface RiskFactor {
+  [key: string]: number;
+}
+
+interface SelectedDataPoint {
+  riskRating: number;
+  assetName: string;
+  riskFactors: RiskFactor;
+  year: number;
+}
 
 export default function Home() {
   const [data, setData] = useState<DataItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [selectedDataPoint, setSelectedDataPoint] = useState<null | {
-    riskRating: number;
-    assetName: string;
-    riskFactors: any; // Update the type according to your data structure
-    year: number;
-  }>(null);
+  const [selectedDataPoint, setSelectedDataPoint] =
+    useState<SelectedDataPoint | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -37,7 +45,6 @@ export default function Home() {
           riskFactors: JSON.parse(item["Risk Factors"]),
           year: item.Year, // Updated property name
         }));
-        // console.log(processedData);
         // Set the processed data in the state
         setData(processedData);
       } catch (error: any) {
@@ -47,8 +54,18 @@ export default function Home() {
     fetchData();
   }, []);
 
-  function aggregateDataByCategoryAndYear(data) {
-    const aggregatedData = data.reduce((acc, item) => {
+  function aggregateDataByCategoryAndYear(
+    data: DataItem[],
+    selectedYear: number | null,
+    selectedCategory: string | null
+  ) {
+    const filteredData = data.filter(
+      (item) =>
+        (!selectedYear || item.year === selectedYear) &&
+        (!selectedCategory || item.businessCategory === selectedCategory)
+    );
+
+    const aggregatedData = filteredData.reduce((acc: any, item: any) => {
       const key = `${item.businessCategory}-${item.year}`;
 
       if (!acc[key]) {
@@ -87,27 +104,43 @@ export default function Home() {
   }
 
   const { labels: labelsArray, values: valuesArray } =
-    aggregateDataByCategoryAndYear(data);
+    aggregateDataByCategoryAndYear(data, selectedYear, selectedCategory);
 
-  const filteredDataArray = labelsArray.map((category) => {
-    const filteredData = data.filter(
-      (item: DataItem) => item.businessCategory === category
-    );
+  const years = [...new Set(data.map((item) => item.year))].sort();
 
-    // Assuming that you want to calculate the average risk rating for each category
-    const totalRiskRating = filteredData.reduce(
-      (sum, item: DataItem) => sum + item.riskRating,
+  const averageRiskRatingByYear = years.map((year) => {
+    const assetsForYear = data.filter((item) => item.year === year);
+    const totalRiskRating = assetsForYear.reduce(
+      (sum, asset) => sum + asset.riskRating,
       0
     );
-    const averageRiskRating = totalRiskRating / filteredData.length;
-
-    return {
-      riskRating: averageRiskRating,
-      assetName: filteredData[0].assetName, // Update this logic according to your data structure
-      riskFactors: filteredData[0].riskFactors, // Update this logic according to your data structure
-      year: filteredData[0].year, // Update this logic according to your data structure
-    };
+    return totalRiskRating / assetsForYear.length;
   });
+
+  const riskRatingByYearData = {
+    labels: years,
+    values: averageRiskRatingByYear,
+  };
+
+  const businessCategories = data.reduce((acc: any, item: any) => {
+    if (acc[item.businessCategory]) {
+      acc[item.businessCategory]++;
+    } else {
+      acc[item.businessCategory] = 1;
+    }
+    return acc;
+  }, {});
+
+  const businessCategoryData = {
+    labels: businessCategories,
+
+    values: businessCategories.map((category) => {
+      const assetsForCategory = data.filter(
+        (item) => item.businessCategory === category
+      );
+      return Number(assetsForCategory.length);
+    }),
+  };
 
   return (
     <div className="w-full h-full bg-gray-100 p-8">
@@ -119,9 +152,9 @@ export default function Home() {
           <RiskMap data={data} />
           <LineGraph
             data={{ labels: labelsArray, values: valuesArray }}
-            filteredData={filteredDataArray}
             setSelectedDataPoint={setSelectedDataPoint}
           />
+          <BarChart data={businessCategoryData} />
         </div>
         <div className="bg-white rounded-lg p-6 shadow-md mb-8">
           <h1 className="text-2xl font-semibold text-primary-600 mb-4">
