@@ -122,14 +122,9 @@ export default function Home() {
     values: averageRiskRatingByYear,
   };
 
-  const businessCategories = data.reduce((acc: any, item: any) => {
-    if (acc[item.businessCategory]) {
-      acc[item.businessCategory]++;
-    } else {
-      acc[item.businessCategory] = 1;
-    }
-    return acc;
-  }, {});
+  const businessCategories = Array.from(
+    new Set(data.map((item) => item.businessCategory))
+  ).sort();
 
   const businessCategoryData = {
     labels: businessCategories,
