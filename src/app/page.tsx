@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import RiskMap from "@/components/RiskMap/RiskMap";
 import DataTable from "@/components/DataTable/DataTable";
 import LineGraph from "@/components/LineGraph/LineGraph";
+import BarChart from "@/components/BarChart/BarChart";
+import PieChart from "@/components/PieChart/PieChart";
 import { fetchDataFromStorage } from "@/app/utils/fetchDataFromStorage";
 import { DataItem } from "@/app/api/types";
-import BarChart from "@/components/BarChart/BarChart";
 
 interface RiskFactor {
   [key: string]: number;
@@ -137,6 +138,15 @@ export default function Home() {
     }),
   };
 
+  const assetCountByCategory = businessCategories.map((category) => {
+    return data.filter((item) => item.businessCategory === category).length;
+  });
+
+  const pieChartData = {
+    labels: businessCategories,
+    values: assetCountByCategory,
+  };
+
   return (
     <div className="w-full h-full bg-gray-100 p-8">
       <div className="container mx-auto">
@@ -150,6 +160,7 @@ export default function Home() {
             setSelectedDataPoint={setSelectedDataPoint}
           />
           <BarChart data={businessCategoryData} />
+          <PieChart data={pieChartData} />
         </div>
         <div className="bg-white rounded-lg p-6 shadow-md mb-8">
           <h1 className="text-2xl font-semibold text-primary-600 mb-4">
