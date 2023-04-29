@@ -7,6 +7,7 @@ import BarChart from "@/components/BarChart/BarChart";
 import PieChart from "@/components/PieChart/PieChart";
 import { fetchDataFromStorage } from "@/app/utils/fetchDataFromStorage";
 import { DataItem } from "@/app/api/types";
+import TotalRiskFactorsByYear from "@/components/TotalRiskFactorByYear/TotalRiskFactorsByYear";
 
 interface RiskFactor {
   [key: string]: number;
@@ -147,6 +148,20 @@ export default function Home() {
     values: assetCountByCategory,
   };
 
+  const totalRiskFactorsByYear = years.map((year) => {
+    const assetsForYear = data.filter((item) => item.year === year);
+    const totalRiskFactors = assetsForYear.reduce(
+      (sum, asset) => sum + Object.keys(asset.riskFactors).length,
+      0
+    );
+    return totalRiskFactors;
+  });
+
+  const totalRiskFactorsByYearData = {
+    labels: years,
+    values: totalRiskFactorsByYear,
+  };
+
   return (
     <div className="w-full h-full bg-gray-100 p-8">
       <div className="container mx-auto">
@@ -161,6 +176,7 @@ export default function Home() {
           />
           <BarChart data={businessCategoryData} />
           <PieChart data={pieChartData} />
+          <TotalRiskFactorsByYear data={totalRiskFactorsByYearData} />
         </div>
         <div className="bg-white rounded-lg p-6 shadow-md mb-8">
           <h1 className="text-2xl font-semibold text-primary-600 mb-4">
