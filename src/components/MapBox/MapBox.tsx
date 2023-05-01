@@ -222,8 +222,15 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
 
       const marker = new Marker({ element: markerElement })
         .setLngLat([item.long, item.lat])
-        .setPopup(popup) // Attach the popup to the marker
         .addTo(mapRef.current!);
+
+      markerElement.addEventListener("mouseenter", () => {
+        marker.setPopup(popup).togglePopup(); // Show the popup
+      });
+
+      markerElement.addEventListener("mouseleave", () => {
+        marker.getPopup()?.remove(); // Remove the popup
+      });
 
       markersRef.current.push(marker);
     };
