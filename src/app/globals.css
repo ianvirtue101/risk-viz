@@ -2,10 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Typography */
 body {
   font-family: "Roboto", sans-serif;
+}
+
+.chart-tooltip {
+  opacity: 1 !important;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
+  border-radius: 5px !important;
+  padding: 8px !important;
 }
 
 .cluster-marker {

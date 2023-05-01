@@ -29,12 +29,7 @@ interface LineGraphProps {
     values: number[];
   };
   setSelectedDataPoint: (dataPoint: any) => void;
-  filteredData?: Array<{
-    riskRating: number;
-    assetName: string;
-    riskFactors: any; // Update the type according to your data structure
-    year: number;
-  }>;
+  filteredData?: DataPoint[];
 }
 
 const LineGraph: React.FC<LineGraphProps> = ({
@@ -101,9 +96,12 @@ const LineGraph: React.FC<LineGraphProps> = ({
                   },
                 },
               },
+              // Create an onClick event
               onClick: (event) => {
                 if (filteredData.length) {
-                  const elements = newChartInstance.getElementsAtEventForMode(
+                  const elements = (
+                    chartInstance as any
+                  ).getElementsAtEventForMode(
                     event,
                     "nearest",
                     { intersect: true },
