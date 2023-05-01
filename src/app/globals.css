@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Color Palette */
+:root {
+  --primary: #1a535c;
+  --secondary: #4ecdc4;
+  --tertiary: #f7fff7;
+  --accent: #ff6b6b;
+  --gray: #e0e0e0;
+}
+
+/* Typography */
+body {
+  font-family: "Roboto", sans-serif;
+}
+
 .cluster-marker {
   display: flex;
   justify-content: center;

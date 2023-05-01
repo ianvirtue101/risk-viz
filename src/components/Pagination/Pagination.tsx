@@ -24,14 +24,26 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div>
-      <button onClick={previousPage} disabled={currentPage === 1}>
+    <div className="flex items-center justify-center my-4">
+      <button
+        onClick={previousPage}
+        disabled={currentPage === 1}
+        className={`bg-primary text--primary font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark focus:ring-opacity-50 ${
+          currentPage === 1 && "opacity-50 cursor-not-allowed"
+        }`}
+      >
         Previous
       </button>
-      <span>
+      <span className="mx-4 text-gray-700">
         {currentPage} of {totalPages}
       </span>
-      <button onClick={nextPage} disabled={currentPage === totalPages}>
+      <button
+        onClick={nextPage}
+        disabled={currentPage === totalPages}
+        className={`bg-primary text--primary font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark focus:ring-opacity-50 ${
+          currentPage === totalPages && "opacity-50 cursor-not-allowed"
+        }`}
+      >
         Next
       </button>
     </div>

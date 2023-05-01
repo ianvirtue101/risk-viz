@@ -8,6 +8,7 @@ import PieChart from "@/components/PieChart/PieChart";
 import { fetchDataFromStorage } from "@/app/utils/fetchDataFromStorage";
 import { DataItem } from "@/app/api/types";
 import TotalRiskFactorsByYear from "@/components/TotalRiskFactorByYear/TotalRiskFactorsByYear";
+import Navbar from "@/components/NavBar/NavBar";
 
 interface RiskFactor {
   [key: string]: number;
@@ -163,51 +164,54 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full h-full bg-gray-100 p-8">
-      <div className="container mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-lg p-6 shadow-md">
-            <h2 className="text-2xl font-semibold text-primary-600 mb-4">
-              Average Risk Rating by Year
-            </h2>
-            <LineGraph
-              data={{ labels: labelsArray, values: valuesArray }}
-              setSelectedDataPoint={setSelectedDataPoint}
-            />
+    <>
+      <Navbar />
+      <div className="w-full h-full p-8">
+        <div className="container mx-auto">
+          <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <h2 className="text-2xl font-semibold text-primary-600 mb-4">
+                Average Risk Rating by Year
+              </h2>
+              <LineGraph
+                data={{ labels: labelsArray, values: valuesArray }}
+                setSelectedDataPoint={setSelectedDataPoint}
+              />
+            </div>
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <h2 className="text-2xl font-semibold text-primary-600 mb-4">
+                Average Risk Rating by Business Category
+              </h2>
+              <BarChart data={businessCategoryData} />
+            </div>
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <h2 className="text-2xl font-semibold text-primary-600 mb-4">
+                Percentage of Assets by Business Category
+              </h2>
+              <PieChart data={pieChartData} />
+            </div>
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <h2 className="text-2xl font-semibold text-primary-600 mb-4">
+                Total Risk Factors by Year
+              </h2>
+              <TotalRiskFactorsByYear data={totalRiskFactorsByYearData} />
+            </div>
           </div>
-          <div className="bg-white rounded-lg p-6 shadow-md">
+          <div className="bg-white rounded-lg p-6 shadow-md mb-8">
             <h2 className="text-2xl font-semibold text-primary-600 mb-4">
-              Average Risk Rating by Business Category
+              Climate Risk Map
             </h2>
-            <BarChart data={businessCategoryData} />
+            <RiskMap data={data} />
           </div>
-          <div className="bg-white rounded-lg p-6 shadow-md">
-            <h2 className="text-2xl font-semibold text-primary-600 mb-4">
-              Percentage of Assets by Business Category
-            </h2>
-            <PieChart data={pieChartData} />
+          <div className="bg-white rounded-lg p-6 shadow-md mb-8">
+            <h1 className="text-2xl font-semibold text-primary-600 mb-4">
+              Climate Risk Data Table
+            </h1>
+            <DataTable data={data} />
           </div>
-          <div className="bg-white rounded-lg p-6 shadow-md">
-            <h2 className="text-2xl font-semibold text-primary-600 mb-4">
-              Total Risk Factors by Year
-            </h2>
-            <TotalRiskFactorsByYear data={totalRiskFactorsByYearData} />
-          </div>
-        </div>
-        <div className="bg-white rounded-lg p-6 shadow-md mb-8">
-          <h2 className="text-2xl font-semibold text-primary-600 mb-4">
-            Climate Risk Map
-          </h2>
-          <RiskMap data={data} />
-        </div>
-        <div className="bg-white rounded-lg p-6 shadow-md mb-8">
-          <h1 className="text-2xl font-semibold text-primary-600 mb-4">
-            Climate Risk Data Table
-          </h1>
-          <DataTable data={data} />
         </div>
       </div>
-    </div>
+    </>
   );
 }
