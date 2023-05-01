@@ -9,3 +9,21 @@
   border: 0.5rem solid red;
   cursor: pointer;
 }
+
+.mapboxgl-popup.popup {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+}
+
+.marker {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%); /* Center the marker */
+  transition: transform 0.3s; /* Add a smooth transition */
+}
+
+.marker:hover {
+  transform: translate(-50%, -50%) scale(1.5); /* Scale the marker on hover */
+}
