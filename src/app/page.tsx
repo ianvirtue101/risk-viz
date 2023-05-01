@@ -9,6 +9,8 @@ import { fetchDataFromStorage } from "@/app/utils/fetchDataFromStorage";
 import { DataItem } from "@/app/api/types";
 import TotalRiskFactorsByYear from "@/components/TotalRiskFactorByYear/TotalRiskFactorsByYear";
 import Navbar from "@/components/NavBar/NavBar";
+import Image from "next/image";
+import BackgroundImage from "../../public/background.png";
 
 interface RiskFactor {
   [key: string]: number;
@@ -68,23 +70,26 @@ export default function Home() {
         (!selectedCategory || item.businessCategory === selectedCategory)
     );
 
-    const aggregatedData = filteredData.reduce((acc: any, item: any) => {
-      const key = `${item.businessCategory}-${item.year}`;
+    const aggregatedData = filteredData.reduce(
+      (acc: { [key: string]: any }, item: DataItem) => {
+        const key = `${item.businessCategory}-${item.year}`;
 
-      if (!acc[key]) {
-        acc[key] = {
-          businessCategory: item.businessCategory,
-          year: item.year,
-          totalRiskRating: item.riskRating,
-          count: 1,
-        };
-      } else {
-        acc[key].totalRiskRating += item.riskRating;
-        acc[key].count += 1;
-      }
+        if (!acc[key]) {
+          acc[key] = {
+            businessCategory: item.businessCategory,
+            year: item.year,
+            totalRiskRating: item.riskRating,
+            count: 1,
+          };
+        } else {
+          acc[key].totalRiskRating += item.riskRating;
+          acc[key].count += 1;
+        }
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
 
     const groupedData = Object.values(aggregatedData);
 
@@ -111,19 +116,19 @@ export default function Home() {
 
   const years = [...new Set(data.map((item) => item.year))].sort();
 
-  const averageRiskRatingByYear = years.map((year) => {
-    const assetsForYear = data.filter((item) => item.year === year);
-    const totalRiskRating = assetsForYear.reduce(
-      (sum, asset) => sum + asset.riskRating,
-      0
-    );
-    return totalRiskRating / assetsForYear.length;
-  });
+  // const averageRiskRatingByYear = years.map((year) => {
+  //   const assetsForYear = data.filter((item) => item.year === year);
+  //   const totalRiskRating = assetsForYear.reduce(
+  //     (sum, asset) => sum + asset.riskRating,
+  //     0
+  //   );
+  //   return totalRiskRating / assetsForYear.length;
+  // });
 
-  const riskRatingByYearData = {
-    labels: years,
-    values: averageRiskRatingByYear,
-  };
+  // const riskRatingByYearData = {
+  //   labels: years,
+  //   values: averageRiskRatingByYear,
+  // };
 
   const businessCategories = Array.from(
     new Set(data.map((item) => item.businessCategory))
@@ -165,31 +170,38 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
-
-      <div className="bg-accent text-white p-8">
-        <h1 className="text-4xl font-bold">
-          Climate Change Projections and Their Impact on Canadian Businesses
-        </h1>
-        <p className="text-xl mt-4">
-          Assessing the impact of climate change on Canadian businesses
-          throughout the 21st century.
-        </p>
-        <div className="mt-4">
-          <label htmlFor="riskType" className="mr-2">
-            Filter by risk type:
-          </label>
-          <select id="riskType" className="rounded-lg bg-white text-black">
-            <option>All</option>
-            <option>Earthquake</option>
-            <option>Wildfire</option>
-            <option>Tornado</option>
-            {/* Add more risk types here */}
-          </select>
+      <div className="bg-hero-image bg-cover bg-center relative min-h-screen">
+        <div className="bg-black bg-opacity-60 min-h-screen flex items-center">
+          <div className="absolute top-0 left-0 w-full">
+            <Navbar />
+          </div>
+          <div className="container mx-auto py-10 px-4">
+            <h1 className="text-white text-4xl font-bold">
+              Climate Risk in Canada
+            </h1>
+            <p className="text-white text-xl mt-4">
+              Assessing the impact of climate change on Canadian businesses
+              throughout the 21st century.
+            </p>
+            <div className="mt-8 grid grid-cols-3 gap-4">
+              <div className="bg-gradient-to-br from-rose-400 to-rose-600 rounded-lg p-4">
+                <h2 className="text-white text-2xl font-semibold">Risk 1</h2>
+                <p className="text-white">Short description about Risk 1</p>
+              </div>
+              <div className="bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg p-4">
+                <h2 className="text-white text-2xl font-semibold">Risk 2</h2>
+                <p className="text-white">Short description about Risk 2</p>
+              </div>
+              <div className="bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-lg p-4">
+                <h2 className="text-white text-2xl font-semibold">Risk 3</h2>
+                <p className="text-white">Short description about Risk 3</p>
+              </div>
+            </div>
+            <button className="bg-white text-black rounded-lg px-6 py-2 mt-8 font-bold">
+              Explore More
+            </button>
+          </div>
         </div>
-        <button className="bg-white text-black rounded-lg px-6 py-2 mt-4 font-bold">
-          Explore More
-        </button>
       </div>
 
       <div className="w-full h-full p-8">
