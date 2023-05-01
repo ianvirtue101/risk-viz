@@ -19,8 +19,8 @@ const TotalRiskFactorsByYear: React.FC<TotalRiskFactorsByYearProps> = ({
       {
         label: "Total Risk Factors by Year",
         data: data.values,
-        backgroundColor: "#2ecc71",
-        borderColor: "#2ecc71",
+        backgroundColor: "#29A08A",
+        borderColor: "#29A08A",
         borderWidth: 1,
       },
     ],

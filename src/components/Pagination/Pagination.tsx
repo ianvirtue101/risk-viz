@@ -28,7 +28,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={previousPage}
         disabled={currentPage === 1}
-        className={`bg-primary text--primary font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark focus:ring-opacity-50 ${
+        className={`bg-secondary text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark focus:ring-opacity-50 ${
           currentPage === 1 && "opacity-50 cursor-not-allowed"
         }`}
       >
@@ -40,7 +40,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={nextPage}
         disabled={currentPage === totalPages}
-        className={`bg-primary text--primary font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark focus:ring-opacity-50 ${
+        className={`bg-secondary text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-dark focus:ring-opacity-50 ${
           currentPage === totalPages && "opacity-50 cursor-not-allowed"
         }`}
       >

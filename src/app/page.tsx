@@ -167,8 +167,10 @@ export default function Home() {
     <>
       <Navbar />
 
-      <div className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 text-white p-6">
-        <h1 className="text-4xl font-bold">Climate Risk in Canada</h1>
+      <div className="bg-accent text-white p-8">
+        <h1 className="text-4xl font-bold">
+          Climate Change Projections and Their Impact on Canadian Businesses
+        </h1>
         <p className="text-xl mt-4">
           Assessing the impact of climate change on Canadian businesses
           throughout the 21st century.
@@ -193,6 +195,12 @@ export default function Home() {
       <div className="w-full h-full p-8">
         <div className="container mx-auto">
           <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
+          <div className="bg-white rounded-lg p-6 shadow-md mb-8">
+            <h2 className="text-2xl font-semibold text-primary-600 mb-4">
+              Climate Risk Map
+            </h2>
+            <RiskMap data={data} />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div className="bg-white rounded-lg p-6 shadow-md">
               <h2 className="text-2xl font-semibold text-primary-600 mb-4">
@@ -222,12 +230,7 @@ export default function Home() {
               <TotalRiskFactorsByYear data={totalRiskFactorsByYearData} />
             </div>
           </div>
-          <div className="bg-white rounded-lg p-6 shadow-md mb-8">
-            <h2 className="text-2xl font-semibold text-primary-600 mb-4">
-              Climate Risk Map
-            </h2>
-            <RiskMap data={data} />
-          </div>
+
           <div className="bg-white rounded-lg p-6 shadow-md mb-8">
             <h1 className="text-2xl font-semibold text-primary-600 mb-4">
               Climate Risk Data Table

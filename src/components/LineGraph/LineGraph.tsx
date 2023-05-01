@@ -59,8 +59,8 @@ const LineGraph: React.FC<LineGraphProps> = ({
                 {
                   label: "Average Risk Rating",
                   data: data.values,
-                  backgroundColor: "rgba(75, 192, 192, 0.2)",
-                  borderColor: "rgba(75, 192, 192, 1)",
+                  backgroundColor: "#29A08A",
+                  borderColor: "#29A08A",
                   borderWidth: 2,
                 },
               ],

@@ -176,7 +176,7 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
     mapRef.current = new mapboxgl.Map({
       container: "map",
-      style: "mapbox://styles/mapbox/streets-v11",
+      style: "mapbox://styles/mapbox/streets-v12",
       center: [-100.746, 46.8797],
       zoom: 3,
     });
@@ -267,10 +267,10 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-6">
         <div className="mb-4">
-          <label htmlFor="decadeYear" className="block text-gray-800">
+          <label htmlFor="decadeYear" className="block text-gray-800 font-bold">
             Decade Year:
           </label>
           <select
