@@ -89,14 +89,14 @@ export default function Home() {
     const groupedData = Object.values(aggregatedData);
 
     const labels = Array.from(
-      new Set(groupedData.map((item) => item.businessCategory))
+      new Set(groupedData.map((item: any) => item.businessCategory))
     );
     const values = labels.map((category) => {
       const filteredData = groupedData.filter(
-        (item) => item.businessCategory === category
+        (item: any) => item.businessCategory === category
       );
       const totalRiskRating = filteredData.reduce(
-        (sum, item) => sum + item.totalRiskRating,
+        (sum, item: any) => sum + item.totalRiskRating,
         0
       );
       const averageRiskRating = totalRiskRating / filteredData.length;
