@@ -166,6 +166,30 @@ export default function Home() {
   return (
     <>
       <Navbar />
+
+      <div className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 text-white p-6">
+        <h1 className="text-4xl font-bold">Climate Risk in Canada</h1>
+        <p className="text-xl mt-4">
+          Assessing the impact of climate change on Canadian businesses
+          throughout the 21st century.
+        </p>
+        <div className="mt-4">
+          <label htmlFor="riskType" className="mr-2">
+            Filter by risk type:
+          </label>
+          <select id="riskType" className="rounded-lg bg-white text-black">
+            <option>All</option>
+            <option>Earthquake</option>
+            <option>Wildfire</option>
+            <option>Tornado</option>
+            {/* Add more risk types here */}
+          </select>
+        </div>
+        <button className="bg-white text-black rounded-lg px-6 py-2 mt-4 font-bold">
+          Explore More
+        </button>
+      </div>
+
       <div className="w-full h-full p-8">
         <div className="container mx-auto">
           <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
