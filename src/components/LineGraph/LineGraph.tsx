@@ -79,9 +79,9 @@ const LineGraph: React.FC<LineGraphProps> = ({
                       }
                       return "";
                     },
-                    label: function (context) {
+                    beforeBody: function (context) {
                       if (filteredData.length) {
-                        const index = context.dataIndex;
+                        const index = context[0].dataIndex;
                         const dataPoint = filteredData[index];
                         return [
                           `Risk Rating: ${dataPoint.riskRating}`,
