@@ -238,7 +238,7 @@ export default function Home() {
         </div>
       </div>
       <Suspense fallback={<Loading />}>
-        <div className="w-full h-full p-8">
+        <div className="w-full h-full p-8 bg-background">
           <div className="container mx-auto">
             <h1 className="text-4xl font-bold mb-4">Dashboard</h1>
             <p className="text-xl mb-4">

@@ -23,6 +23,7 @@ module.exports = {
         accent: "#C2DEF6",
         "accent-light": "#FF6B6B",
         "accent-dark": "#B02630",
+        background: "#F0F8FF",
       },
       textColor: {
         primary: "#4CAE4C",
