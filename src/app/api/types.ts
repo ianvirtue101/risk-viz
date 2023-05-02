@@ -1,3 +1,4 @@
+// DataItem is the type of the data that is returned from the API
 export interface DataItem {
   id: number;
   assetName: string;

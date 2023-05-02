@@ -37,11 +37,11 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
               {
                 data: data.values,
                 backgroundColor: [
-                  "#4caf50", // Green
-                  "#f44336", // Red
-                  "#2196f3", // Blue
-                  "#ffc107", // Amber
-                  "#9c27b0", // Purple
+                  "#0AAB8D", // Green
+                  "#203845", // Red
+                  "##064263", // Blue
+                  "#B54838", // Amber
+                  "#DE232E", // Purple
                   "#ff5722", // Deep Orange
                   "#009688", // Teal
                   "#cddc39", // Lime

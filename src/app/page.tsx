@@ -22,15 +22,20 @@ interface SelectedDataPoint {
   year: number;
 }
 
+// Define the main Home component
 export default function Home() {
+  // State variables
   const [data, setData] = useState<DataItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedDataPoint, setSelectedDataPoint] =
     useState<SelectedDataPoint | null>(null);
 
+  // Refs for scrolling functionality
   const mapRef: RefObject<HTMLHeadingElement> = useRef(null);
+  const dataRef: RefObject<HTMLHeadingElement> = useRef(null);
 
+  // Fetch and process the data on component mount
   useEffect(() => {
     async function fetchData() {
       try {
@@ -69,11 +74,13 @@ export default function Home() {
     fetchData();
   }, []);
 
+  // Helper function to round numbers to a specific number of decimal places
   function roundToDecimalPlaces(value: number, decimalPlaces: number): number {
     const multiplier = Math.pow(10, decimalPlaces);
     return Math.round(value * multiplier) / multiplier;
   }
 
+  // Aggregate the data based on the selected year and category
   function aggregateDataByCategoryAndYear(
     data: DataItem[],
     selectedYear: number | null,
@@ -108,6 +115,7 @@ export default function Home() {
 
     const groupedData = Object.values(aggregatedData);
 
+    // Calculate aggregated data for the selected year and category
     const labels = Array.from(
       new Set(groupedData.map((item: any) => item.businessCategory))
     );
@@ -129,8 +137,10 @@ export default function Home() {
   const { labels: labelsArray, values: valuesArray } =
     aggregateDataByCategoryAndYear(data, selectedYear, selectedCategory);
 
+  // Extract unique years and business categories from the data
   const years = [...new Set(data.map((item) => item.year))].sort();
 
+  // Calculate data for business categories chart
   const businessCategories = Array.from(
     new Set(data.map((item) => item.businessCategory))
   ).sort();
@@ -146,15 +156,18 @@ export default function Home() {
     }),
   };
 
+  // Calculate asset count by business category for the pie chart
   const assetCountByCategory = businessCategories.map((category) => {
     return data.filter((item) => item.businessCategory === category).length;
   });
 
+  // Prepare data for the pie chart
   const pieChartData = {
     labels: businessCategories,
     values: assetCountByCategory,
   };
 
+  // Calculate total risk factors by year
   const totalRiskFactorsByYear = years.map((year) => {
     const assetsForYear = data.filter((item) => item.year === year);
     const totalRiskFactors = assetsForYear.reduce(
@@ -164,14 +177,23 @@ export default function Home() {
     return totalRiskFactors;
   });
 
+  // Prepare data for the total risk factors by year chart
   const totalRiskFactorsByYearData = {
     labels: years,
     values: totalRiskFactorsByYear,
   };
 
+  // Scroll to the map section when the Explore More button is clicked
   const handleExploreMore = () => {
     if (mapRef.current) {
       mapRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  // Scroll to the data section when the Learn More button is clicked
+  const handleLearnMore = () => {
+    if (dataRef.current) {
+      dataRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -253,7 +275,10 @@ export default function Home() {
               strategies, adapt to changing conditions, and contribute to a more
               sustainable future.
             </p>
-            <button className="bg-secondary text-white rounded-lg px-8 py-3 mb-8 font-bold text-xl hover:bg-gray-200 transition-all duration-300 ease-in cursor-pointer">
+            <button
+              onClick={handleLearnMore}
+              className="bg-secondary text-white rounded-lg px-8 py-3 mb-8 font-bold text-xl hover:bg-gray-200 transition-all duration-300 ease-in cursor-pointer"
+            >
               Learn More
             </button>
 
@@ -272,7 +297,10 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8">
               <div className="bg-white rounded-lg p-6 shadow-md">
-                <h2 className="text-2xl font-semibold text-primary-600 mb-4">
+                <h2
+                  className="text-2xl font-semibold text-primary-600 mb-4"
+                  ref={dataRef}
+                >
                   Average Risk Rating by Year
                 </h2>
                 <p className="text-xl mb-4">

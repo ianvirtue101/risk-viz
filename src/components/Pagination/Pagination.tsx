@@ -6,11 +6,13 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
+// Define the Pagination component
 const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   currentPage,
   onPageChange,
 }) => {
+  // Define the previousPage and nextPage functions
   const previousPage = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
@@ -23,6 +25,7 @@ const Pagination: React.FC<PaginationProps> = ({
     }
   };
 
+  // Return the Pagination component
   return (
     <div className="flex items-center justify-center my-4">
       <button

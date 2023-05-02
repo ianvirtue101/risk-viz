@@ -7,10 +7,10 @@ type RiskMapProps = {
   data: DataItem[];
 };
 
+// Define the number of items to display per page
+const itemsPerPage = 100;
 
-
-const itemsPerPage = 100; // Change this value as needed
-
+// Function to fetch a specific page of data based on the provided page number and data array
 function fetchPage(page: number, data: DataItem[]): DataItem[] {
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -18,15 +18,20 @@ function fetchPage(page: number, data: DataItem[]): DataItem[] {
   return data.slice(startIndex, endIndex);
 }
 
+// Define the RiskMap component
 const RiskMap: React.FC<RiskMapProps> = ({ data }) => {
+  // Define the current page state
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Calculate the total number of pages
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
+  // Function to handle page changes
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
 
+  // Fetch the data to display on the current page
   const displayedData = fetchPage(currentPage, data);
 
   return (

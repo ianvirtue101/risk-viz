@@ -2,6 +2,7 @@
 import firebase_app from "../../firebase/config";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
+// Get a document, returning the data or null if it does not exist.
 const db = getFirestore(firebase_app);
 export default async function getDocument(collection: any, id: any) {
   let docRef = doc(db, collection, id);
