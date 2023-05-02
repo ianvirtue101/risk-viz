@@ -249,13 +249,23 @@ export default function Home() {
             <h2 className="text-2xl font-semibold text-primary-600 mb-4">
               Climate Risk Map
             </h2>
+            <p className="text-xl mb-4">
+              Visualize the geographical distribution of climate risks in
+              Canada. Hover over regions to view risk ratings and click on them
+              to access more detailed information.
+            </p>
             <RiskMap data={data} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8">
             <div className="bg-white rounded-lg p-6 shadow-md">
               <h2 className="text-2xl font-semibold text-primary-600 mb-4">
                 Average Risk Rating by Year
               </h2>
+              <p className="text-xl mb-4">
+                Explore how the average risk rating for Canadian businesses has
+                changed over time. Identify patterns and trends to better
+                understand how climate change is impacting different industries.
+              </p>
               <LineGraph
                 data={{ labels: labelsArray, values: valuesArray }}
                 setSelectedDataPoint={setSelectedDataPoint}
@@ -265,18 +275,36 @@ export default function Home() {
               <h2 className="text-2xl font-semibold text-primary-600 mb-4">
                 Average Risk Rating by Business Category
               </h2>
+              <p className="text-xl mb-4">
+                Compare the average risk ratings across various business
+                categories to identify which industries are most affected by
+                climate change. Analyze how different sectors are coping with
+                climate risks.
+              </p>
               <BarChart data={businessCategoryData} />
             </div>
             <div className="bg-white rounded-lg p-6 shadow-md">
               <h2 className="text-2xl font-semibold text-primary-600 mb-4">
                 Percentage of Assets by Business Category
               </h2>
+              <p className="text-xl mb-4">
+                Examine the distribution of assets among different business
+                categories to understand the potential financial implications of
+                climate change. Identify sectors with higher exposure to climate
+                risks.
+              </p>
               <PieChart data={pieChartData} />
             </div>
             <div className="bg-white rounded-lg p-6 shadow-md">
               <h2 className="text-2xl font-semibold text-primary-600 mb-4">
                 Total Risk Factors by Year
               </h2>
+              <p className="text-xl mb-4">
+                Assess the evolution of total risk factors by year to track the
+                progression of climate change impacts. Monitor how risks are
+                developing over time and inform your adaptation strategies
+                accordingly.
+              </p>
               <TotalRiskFactorsByYear data={totalRiskFactorsByYearData} />
             </div>
           </div>
@@ -285,6 +313,11 @@ export default function Home() {
             <h1 className="text-2xl font-semibold text-primary-600 mb-4">
               Climate Risk Data Table
             </h1>
+            <p className="text-xl mb-4">
+              Access raw data on climate risks for Canadian businesses. Filter,
+              sort, and search through the data to find specific information and
+              gain a more granular understanding of climate risk factors.
+            </p>
             <DataTable data={data} />
           </div>
         </div>
