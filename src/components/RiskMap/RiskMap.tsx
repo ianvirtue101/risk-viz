@@ -7,6 +7,8 @@ type RiskMapProps = {
   data: DataItem[];
 };
 
+
+
 const itemsPerPage = 100; // Change this value as needed
 
 function fetchPage(page: number, data: DataItem[]): DataItem[] {

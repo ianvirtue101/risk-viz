@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState, useRef } from "react";
 import RiskMap from "@/components/RiskMap/RiskMap";
 import DataTable from "@/components/DataTable/DataTable";
 import LineGraph from "@/components/LineGraph/LineGraph";
@@ -28,6 +28,8 @@ export default function Home() {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedDataPoint, setSelectedDataPoint] =
     useState<SelectedDataPoint | null>(null);
+
+  const mapRef = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -167,6 +169,10 @@ export default function Home() {
     values: totalRiskFactorsByYear,
   };
 
+  const handleExploreMore = () => {
+    mapRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       <div className="bg-hero-image bg-cover bg-center relative min-h-screen">
@@ -220,7 +226,10 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <button className="bg-white text-black rounded-lg px-8 py-3 mt-8 font-bold text-xl hover:bg-gray-200 transition-all duration-300 ease-in cursor-pointer">
+            <button
+              className="bg-white text-black rounded-lg px-8 py-3 mt-8 font-bold text-xl hover:bg-gray-200 transition-all duration-300 ease-in cursor-pointer"
+              onClick={handleExploreMore}
+            >
               Explore More
             </button>
           </div>
@@ -247,7 +256,10 @@ export default function Home() {
             </button>
 
             <div className="bg-white rounded-lg p-6 shadow-md mb-8">
-              <h2 className="text-2xl font-semibold text-primary-600 mb-4">
+              <h2
+                className="text-2xl font-semibold text-primary-600 mb-4"
+                ref={mapRef}
+              >
                 Climate Risk Map
               </h2>
               <p className="text-xl mb-4">
