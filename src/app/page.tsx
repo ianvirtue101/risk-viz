@@ -211,7 +211,7 @@ export default function Home() {
               <div className="bg-gradient-to-br from-red-400 to-red-600 rounded-lg p-4 hover:shadow-lg transition-all duration-300 ease-in">
                 <h2 className="text-white text-2xl font-semibold">Wildfires</h2>
                 <p className="text-white">
-                  Wildfires pose a significant risk to Canada's forests,
+                  Wildfires pose a significant risk to Canada&apos;s forests,
                   communities, and economy. Climate change has resulted in drier
                   and warmer conditions, increasing the likelihood of wildfires,
                   which can cause widespread damage, air quality issues, and
@@ -228,13 +228,23 @@ export default function Home() {
 
       <div className="w-full h-full p-8">
         <div className="container mx-auto">
-          <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
-          <p className="text-xl mb-8">
-            Explore the climate risk data through interactive visualizations and
-            a data table. Analyze trends, compare risks across different
-            industries, and gain insights to make informed decisions for your
-            business.
+          <h1 className="text-4xl font-bold mb-4">Dashboard</h1>
+          <p className="text-xl mb-4">
+            Delve into our comprehensive climate risk dashboard to better
+            understand the potential impacts of climate change on Canadian
+            businesses. Explore the data through interactive visualizations,
+            including a climate risk map, graphs showcasing average risk
+            ratings, and more. Analyze trends over time, compare risks across
+            different industries, and identify vulnerable areas or sectors. By
+            utilizing this dashboard, businesses, policymakers, and other
+            stakeholders can gain valuable insights to inform their strategies,
+            adapt to changing conditions, and contribute to a more sustainable
+            future.
           </p>
+          <button className="bg-secondary text-white rounded-lg px-8 py-3 mb-8 font-bold text-xl hover:bg-gray-200 transition-all duration-300 ease-in cursor-pointer">
+            Learn More
+          </button>
+
           <div className="bg-white rounded-lg p-6 shadow-md mb-8">
             <h2 className="text-2xl font-semibold text-primary-600 mb-4">
               Climate Risk Map
