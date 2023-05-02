@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect, useState, useRef } from "react";
+import React, { Suspense, useEffect, useState, useRef, RefObject } from "react";
 import RiskMap from "@/components/RiskMap/RiskMap";
 import DataTable from "@/components/DataTable/DataTable";
 import LineGraph from "@/components/LineGraph/LineGraph";
@@ -29,7 +29,7 @@ export default function Home() {
   const [selectedDataPoint, setSelectedDataPoint] =
     useState<SelectedDataPoint | null>(null);
 
-  const mapRef = useRef(null);
+  const mapRef: RefObject<HTMLElement> = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -170,7 +170,9 @@ export default function Home() {
   };
 
   const handleExploreMore = () => {
-    mapRef.current.scrollIntoView({ behavior: "smooth" });
+    if (mapRef.current) {
+      mapRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
