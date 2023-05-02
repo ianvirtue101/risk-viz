@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { DataItem } from "../../app/api/types";
+import Pagination from "../Pagination/Pagination";
 
 interface DataTableProps {
   data: DataItem[];
@@ -19,6 +20,15 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
   const [selectedRiskRating, setSelectedRiskRating] = useState<number | null>(
     null
   );
+
+  // State for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Define the number of items per page
+
+  // Handler function for updating the current page
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   // Handler functions for updating filter values
   const handleFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +96,16 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
     );
   });
 
+  // Calculate the start and end indices for the items on the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  // Slice the filteredData array to only include items for the current page
+  const dataToRender = filteredData.slice(startIndex, endIndex);
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
   return (
     <div>
       <input
@@ -144,6 +164,13 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
           <option value="2060">2060</option>
           <option value="2070">2070</option>
         </select>
+        <div className="pagination-container flex flex-grow sm:justify-center md:justify-end">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
@@ -160,7 +187,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item, index) => (
+            {dataToRender.map((item, index) => (
               <tr key={item.id} className={index % 2 === 0 ? "bg-gray-50" : ""}>
                 <td className="border p-2">{item.id}</td>
                 <td className="border p-2">{item.assetName}</td>
