@@ -169,33 +169,57 @@ export default function Home() {
   return (
     <>
       <div className="bg-hero-image bg-cover bg-center relative min-h-screen">
-        <div className="bg-black bg-opacity-60 min-h-screen flex items-center">
+        <div className="bg-black bg-opacity-60 min-h-screen flex items-center py-16">
           <div className="absolute top-0 left-0 w-full">
             <Navbar />
           </div>
-          <div className="container mx-auto py-10 px-4">
-            <h1 className="text-white text-4xl font-bold">
+          <div className="container mx-auto px-4 flex flex-col items-center">
+            <h1 className="text-white text-4xl font-bold mb-6">
               Climate Risk in Canada
             </h1>
-            <p className="text-white text-xl mt-4">
+            <p className="text-white text-xl mb-8">
               Assessing the impact of climate change on Canadian businesses
-              throughout the 21st century.
+              throughout the 21st century. As global temperatures rise and
+              extreme weather events become more frequent, businesses across
+              various industries are facing increasing risks and challenges.
+              This analysis aims to provide insights into the potential
+              consequences of climate change, empowering businesses to make
+              informed decisions, adapt to changing conditions, and contribute
+              to a sustainable future.
             </p>
             <div className="mt-8 grid grid-cols-3 gap-4">
-              <div className="bg-gradient-to-br from-rose-400 to-rose-600 rounded-lg p-4">
-                <h2 className="text-white text-2xl font-semibold">Risk 1</h2>
-                <p className="text-white">Short description about Risk 1</p>
+              <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg p-4 hover:shadow-lg transition-all duration-300 ease-in">
+                <h2 className="text-white text-2xl font-semibold">Flooding</h2>
+                <p className="text-white">
+                  Flooding is a major concern in Canada, causing significant
+                  damage to infrastructure, property, and the environment. As
+                  climate change intensifies, the frequency and severity of
+                  floods are expected to increase.
+                </p>
               </div>
-              <div className="bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg p-4">
-                <h2 className="text-white text-2xl font-semibold">Risk 2</h2>
-                <p className="text-white">Short description about Risk 2</p>
+              <div className="bg-gradient-to-br from-yellow-400 to-orange-600 rounded-lg p-4 hover:shadow-lg transition-all duration-300 ease-in">
+                <h2 className="text-white text-2xl font-semibold">
+                  Extreme Heat
+                </h2>
+                <p className="text-white">
+                  Extreme heat events in Canada have become more common and
+                  intense due to climate change. These events can lead to
+                  heat-related illnesses, increased energy consumption, and
+                  negative impacts on agriculture and ecosystems.
+                </p>
               </div>
-              <div className="bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-lg p-4">
-                <h2 className="text-white text-2xl font-semibold">Risk 3</h2>
-                <p className="text-white">Short description about Risk 3</p>
+              <div className="bg-gradient-to-br from-red-400 to-red-600 rounded-lg p-4 hover:shadow-lg transition-all duration-300 ease-in">
+                <h2 className="text-white text-2xl font-semibold">Wildfires</h2>
+                <p className="text-white">
+                  Wildfires pose a significant risk to Canada's forests,
+                  communities, and economy. Climate change has resulted in drier
+                  and warmer conditions, increasing the likelihood of wildfires,
+                  which can cause widespread damage, air quality issues, and
+                  long-lasting ecological impacts.
+                </p>
               </div>
             </div>
-            <button className="bg-white text-black rounded-lg px-6 py-2 mt-8 font-bold">
+            <button className="bg-white text-black rounded-lg px-8 py-3 mt-8 font-bold text-xl hover:bg-gray-200 transition-all duration-300 ease-in cursor-pointer">
               Explore More
             </button>
           </div>
@@ -205,6 +229,12 @@ export default function Home() {
       <div className="w-full h-full p-8">
         <div className="container mx-auto">
           <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
+          <p className="text-xl mb-8">
+            Explore the climate risk data through interactive visualizations and
+            a data table. Analyze trends, compare risks across different
+            industries, and gain insights to make informed decisions for your
+            business.
+          </p>
           <div className="bg-white rounded-lg p-6 shadow-md mb-8">
             <h2 className="text-2xl font-semibold text-primary-600 mb-4">
               Climate Risk Map
