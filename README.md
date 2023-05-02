@@ -1,41 +1,61 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Run Locally
 
-First, run the development server:
+Clone the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+  git clone https://github.com/ianvirtue101/risk-viz.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to the project directory
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+  cd risk-viz
+```
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+Install dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+  npm install
+```
 
-## Learn More
+Start the server
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+  npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# Climate Risk Dashboard
+The Climate Risk Dashboard is a web application designed to showcase the impact of climate change on various industries and assets in Canada. The dashboard provides insights into the potential ramifications of climate change, equipping businesses with the knowledge to make strategic decisions, adapt to the evolving landscape, and actively participate in shaping a sustainable future.
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-=======
-# risk-viz
- A UI/UX Developer coding challenge project, visualizing climate risk data with an interactive map, sortable/filterable data table, and line graph. Built using Next.js, Tailwind CSS, mapping and charting libraries. Showcases large-scale data handling and seamless user experience.
->>>>>>> a7035e1516d9c306cadbd5cd3f8c7de7037a47ad
+# Features
+Interactive data table displaying information about assets, including risk factors, business categories, and risk ratings.
+Multiple filtering options to help users find specific data points based on their interests.
+Responsive design that adapts to different screen sizes, ensuring a seamless experience across devices.
+Aesthetic and user-friendly interface.
+
+# Technologies Used
+Next.js
+React.js
+Tailwind CSS
+TypeScript
+Firebase
+
+# Contributing
+If you're interested in contributing to this project, feel free to fork the repository, make your changes, and open a pull request. Please ensure that your code follows the existing style guidelines and that all tests are passing before submitting your changes.
+
+# License
+This project is open source and available under the MIT License.
+
+# Acknowledgments
+Thanks to the OpenAI team for their assistance with the development of this application.
+
+
+## 🔗 Links
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://www.ianvirtue.dev/)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ian-virtue//)
+
+
