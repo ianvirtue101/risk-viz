@@ -76,7 +76,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
         placeholder="Search"
         value={filterTerm}
         onChange={handleFilter}
-        className="border p-2 mb-4"
+        className="border p-2 mb-4 rounded"
       />
       <div className="flex flex-wrap gap-4 mb-4">
         <select onChange={handleRiskFactorFilter} className="border p-2 mb-4">
@@ -118,11 +118,20 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
           <option value="0.9">0.9</option>
           <option value="1">1</option>
         </select>
+
+        <select onChange={handleYearFilter} className="border p-2 mb-4">
+          <option value="">Year</option>
+          <option value="2030">2030</option>
+          <option value="2040">2040</option>
+          <option value="2050">2050</option>
+          <option value="2060">2060</option>
+          <option value="2070">2070</option>
+        </select>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr>
+            <tr className="bg-gray-100">
               <th className="border p-2">ID</th>
               <th className="border p-2">Asset Name</th>
               <th className="border p-2">Lat</th>
@@ -134,8 +143,8 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item) => (
-              <tr key={item.id}>
+            {filteredData.map((item, index) => (
+              <tr key={item.id} className={index % 2 === 0 ? "bg-gray-50" : ""}>
                 <td className="border p-2">{item.id}</td>
                 <td className="border p-2">{item.assetName}</td>
                 <td className="border p-2">{item.lat}</td>
