@@ -29,7 +29,7 @@ export default function Home() {
   const [selectedDataPoint, setSelectedDataPoint] =
     useState<SelectedDataPoint | null>(null);
 
-  const mapRef: RefObject<HTMLElement> = useRef(null);
+  const mapRef: RefObject<HTMLHeadingElement> = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
