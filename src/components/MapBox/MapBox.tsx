@@ -25,6 +25,8 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
 
     mapRef.current.addControl(new mapboxgl.NavigationControl(), "top-right");
 
+    mapRef.current.addControl(new mapboxgl.FullscreenControl());
+
     return () => {
       if (mapRef.current) {
         mapRef.current.remove();
