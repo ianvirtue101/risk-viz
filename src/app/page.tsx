@@ -57,12 +57,12 @@ export default function Home() {
           return {
             id: index, // Add the index as the id
             assetName: item["Asset Name"],
-            lat: item.Lat, // Updated property name
-            long: item.Long, // Updated property name
+            lat: item.Lat,
+            long: item.Long,
             businessCategory: item["Business Category"],
             riskRating: item["Risk Rating"],
             riskFactors: roundedRiskFactors,
-            year: item.Year, // Updated property name
+            year: item.Year,
           };
         });
         // Set the processed data in the state
@@ -218,7 +218,7 @@ export default function Home() {
               strategic decisions, adapt to the evolving landscape, and actively
               participate in shaping a sustainable future.
             </p>
-            <div className="mt-8 grid grid-cols-3 gap-4">
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg p-4 hover:shadow-lg transition-all duration-300 ease-in">
                 <h2 className="text-white text-2xl font-semibold">Flooding</h2>
                 <p className="text-white">
@@ -260,7 +260,7 @@ export default function Home() {
         </div>
       </div>
       <Suspense fallback={<Loading />}>
-        <div className="w-full h-full p-8 bg-background">
+        <div className="w-full h-full p-4 md:p-8 bg-background">
           <div className="container mx-auto">
             <h1 className="text-4xl font-bold mb-4">Dashboard</h1>
             <p className="text-xl mb-4">
