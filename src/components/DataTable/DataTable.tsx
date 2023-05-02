@@ -120,7 +120,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
         </select>
 
         <select onChange={handleYearFilter} className="border p-2 mb-4">
-          <option value="">Year</option>
+          <option value="">All Years</option>
           <option value="2030">2030</option>
           <option value="2040">2040</option>
           <option value="2050">2050</option>
