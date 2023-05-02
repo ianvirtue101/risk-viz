@@ -9,8 +9,6 @@ import { fetchDataFromStorage } from "@/app/utils/fetchDataFromStorage";
 import { DataItem } from "@/app/api/types";
 import TotalRiskFactorsByYear from "@/components/TotalRiskFactorByYear/TotalRiskFactorsByYear";
 import Navbar from "@/components/NavBar/NavBar";
-import Image from "next/image";
-import BackgroundImage from "../../public/background.png";
 
 interface RiskFactor {
   [key: string]: number;
@@ -40,16 +38,25 @@ export default function Home() {
         const rawData: DataItem[] = await response.json();
 
         // Process the raw data
-        const processedData = rawData.map((item: any, index: number) => ({
-          id: index, // Add the index as the id
-          assetName: item["Asset Name"],
-          lat: item.Lat, // Updated property name
-          long: item.Long, // Updated property name
-          businessCategory: item["Business Category"],
-          riskRating: item["Risk Rating"],
-          riskFactors: JSON.parse(item["Risk Factors"]),
-          year: item.Year, // Updated property name
-        }));
+        const processedData = rawData.map((item: any, index: number) => {
+          const riskFactors = JSON.parse(item["Risk Factors"]);
+          const roundedRiskFactors: RiskFactor = {};
+
+          Object.keys(riskFactors).forEach((key) => {
+            roundedRiskFactors[key] = roundToDecimalPlaces(riskFactors[key], 2);
+          });
+
+          return {
+            id: index, // Add the index as the id
+            assetName: item["Asset Name"],
+            lat: item.Lat, // Updated property name
+            long: item.Long, // Updated property name
+            businessCategory: item["Business Category"],
+            riskRating: item["Risk Rating"],
+            riskFactors: roundedRiskFactors,
+            year: item.Year, // Updated property name
+          };
+        });
         // Set the processed data in the state
         setData(processedData);
       } catch (error: any) {
@@ -58,6 +65,11 @@ export default function Home() {
     }
     fetchData();
   }, []);
+
+  function roundToDecimalPlaces(value: number, decimalPlaces: number): number {
+    const multiplier = Math.pow(10, decimalPlaces);
+    return Math.round(value * multiplier) / multiplier;
+  }
 
   function aggregateDataByCategoryAndYear(
     data: DataItem[],
@@ -115,20 +127,6 @@ export default function Home() {
     aggregateDataByCategoryAndYear(data, selectedYear, selectedCategory);
 
   const years = [...new Set(data.map((item) => item.year))].sort();
-
-  // const averageRiskRatingByYear = years.map((year) => {
-  //   const assetsForYear = data.filter((item) => item.year === year);
-  //   const totalRiskRating = assetsForYear.reduce(
-  //     (sum, asset) => sum + asset.riskRating,
-  //     0
-  //   );
-  //   return totalRiskRating / assetsForYear.length;
-  // });
-
-  // const riskRatingByYearData = {
-  //   labels: years,
-  //   values: averageRiskRatingByYear,
-  // };
 
   const businessCategories = Array.from(
     new Set(data.map((item) => item.businessCategory))
