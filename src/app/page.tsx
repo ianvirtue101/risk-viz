@@ -204,7 +204,7 @@ export default function Home() {
           <div className="absolute top-0 left-0 w-full">
             <Navbar />
           </div>
-          <div className="container mx-auto px-4 flex flex-col items-center">
+          <div className="container mx-auto px-4 flex flex-col items-center pt-16">
             <h1 className="text-white text-4xl font-bold mb-6">
               Climate Risk in Canada
             </h1>
