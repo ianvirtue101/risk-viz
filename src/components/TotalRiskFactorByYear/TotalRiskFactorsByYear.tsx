@@ -1,8 +1,8 @@
 "use client";
-
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
+// Define the TotalRiskFactorsByYearProps interface
 interface TotalRiskFactorsByYearProps {
   data: {
     labels: number[];
@@ -10,11 +10,14 @@ interface TotalRiskFactorsByYearProps {
   };
 }
 
+// Define the TotalRiskFactorsByYear component
 const TotalRiskFactorsByYear: React.FC<TotalRiskFactorsByYearProps> = ({
   data,
 }) => {
+  // Define the chart data
   const chartData = {
     labels: data.labels,
+    // Configure the chart data
     datasets: [
       {
         label: "Total Risk Factors by Year",
@@ -26,6 +29,7 @@ const TotalRiskFactorsByYear: React.FC<TotalRiskFactorsByYearProps> = ({
     ],
   };
 
+  // Configure the chart options
   const options = {
     scales: {
       y: {
@@ -34,6 +38,7 @@ const TotalRiskFactorsByYear: React.FC<TotalRiskFactorsByYearProps> = ({
     },
   };
 
+  // Return the Bar component with the chart data and options
   return <Bar data={chartData} options={options} />;
 };
 

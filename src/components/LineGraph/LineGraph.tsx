@@ -8,6 +8,7 @@ import {
   CategoryScale,
 } from "chart.js";
 
+// Register necessary chart elements and scales
 Chart.register(
   LineController,
   LineElement,
@@ -16,6 +17,7 @@ Chart.register(
   CategoryScale
 );
 
+// Define the DataPoint interface
 interface DataPoint {
   riskRating: number;
   assetName: string;
@@ -23,6 +25,7 @@ interface DataPoint {
   year: number;
 }
 
+// Define the LineGraphProps interface
 interface LineGraphProps {
   data: {
     labels: string[];
@@ -32,24 +35,31 @@ interface LineGraphProps {
   filteredData?: DataPoint[];
 }
 
+// Define the LineGraph component
 const LineGraph: React.FC<LineGraphProps> = ({
   data,
   setSelectedDataPoint,
   filteredData = [],
 }) => {
+  // Define the chart reference
   const chartRef = useRef<HTMLCanvasElement>(null);
+  // Define the chart instance state
   const [chartInstance, setChartInstance] = useState<Chart | null>(null);
 
+  // useEffect hook to create or update the chart when the data or the canvas ref changes
   useEffect(() => {
+    // Check if the chart reference and the data exist
     if (chartRef && chartRef.current) {
       const ctx = chartRef.current.getContext("2d");
 
+      // Check if the context exists
       if (ctx) {
         if (!chartInstance) {
           const newChartInstance = new Chart(ctx, {
             type: "line",
             data: {
               labels: data.labels,
+              // Configure the chart data
               datasets: [
                 {
                   label: "Average Risk Rating",
@@ -60,6 +70,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
                 },
               ],
             },
+            // Configure the chart options
             options: {
               responsive: true,
               maintainAspectRatio: false,
@@ -68,10 +79,12 @@ const LineGraph: React.FC<LineGraphProps> = ({
                   beginAtZero: true,
                 },
               },
+              // Configure the chart tooltip
               plugins: {
                 tooltip: {
                   enabled: true,
                   callbacks: {
+                    // Define the tooltip title and body
                     title: function (context) {
                       if (filteredData.length) {
                         const index = context[0].dataIndex;
@@ -79,6 +92,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
                       }
                       return "";
                     },
+                    // Define the tooltip body
                     beforeBody: function (context) {
                       if (filteredData.length) {
                         const index = context[0].dataIndex;
@@ -97,7 +111,9 @@ const LineGraph: React.FC<LineGraphProps> = ({
                 },
               },
               // Create an onClick event
+              // When the user clicks on a data point, set the selected data point
               onClick: (event) => {
+                // Check if the filtered data exists
                 if (filteredData.length) {
                   const elements = (
                     chartInstance as any
@@ -107,7 +123,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
                     { intersect: true },
                     true
                   );
-
+                  // Get the index of the selected data point
                   if (elements.length) {
                     const index = elements[0].index;
                     setSelectedDataPoint(filteredData[index]);
@@ -121,6 +137,7 @@ const LineGraph: React.FC<LineGraphProps> = ({
 
           setChartInstance(newChartInstance);
         } else {
+          // Update the chart data
           chartInstance.data.labels = data.labels;
           chartInstance.data.datasets[0].data = data.values;
           chartInstance.update();

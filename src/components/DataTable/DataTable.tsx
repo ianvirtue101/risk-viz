@@ -5,8 +5,9 @@ import { DataItem } from "../../app/api/types";
 interface DataTableProps {
   data: DataItem[];
 }
-
+// Define the DataTable component
 const DataTable: React.FC<DataTableProps> = ({ data }) => {
+  // Define the filter term state
   const [filterTerm, setFilterTerm] = useState("");
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedRiskFactor, setSelectedRiskFactor] = useState<string | null>(
@@ -19,26 +20,31 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
     null
   );
 
+  // Handler functions for updating filter values
   const handleFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilterTerm(event.target.value);
   };
 
+  // Handler functions for updating filter values
   const handleYearFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(event.target.value ? parseInt(event.target.value) : null);
   };
 
+  // Handler functions for updating filter values
   const handleRiskFactorFilter = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSelectedRiskFactor(event.target.value || null);
   };
 
+  // Handler functions for updating filter values
   const handleBusinessCategoryFilter = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSelectedBusinessCategory(event.target.value || null);
   };
 
+  // Handler functions for updating filter values
   const handleRiskRatingFilter = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -47,19 +53,30 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
     );
   };
 
+  // Filter the data based on the current filter values
   const filteredData = data.filter((item) => {
+    // Check if the item matches the filter term
     const matchesFilterTerm =
       !filterTerm ||
       item.assetName.toLowerCase().includes(filterTerm.toLowerCase());
+
+    // Check if the item matches the filter term
     const matchesYear = !selectedYear || item.year === selectedYear;
+
+    // Check if the item matches the filter term
     const matchesRiskFactor =
       !selectedRiskFactor || item.riskFactors[selectedRiskFactor] !== undefined;
+
+    // Check if the item matches the filter term
     const matchesBusinessCategory =
       !selectedBusinessCategory ||
       item.businessCategory === selectedBusinessCategory;
+
+    // Check if the item matches the filter term
     const matchesRiskRating =
       !selectedRiskRating || item.riskRating === selectedRiskRating;
 
+    // Return true if the item matches all the filter values
     return (
       matchesFilterTerm &&
       matchesYear &&
