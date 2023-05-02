@@ -187,14 +187,14 @@ export default function Home() {
               Climate Risk in Canada
             </h1>
             <p className="text-white text-xl mb-8">
-              Assessing the impact of climate change on Canadian businesses
-              throughout the 21st century. As global temperatures rise and
-              extreme weather events become more frequent, businesses across
-              various industries are facing increasing risks and challenges.
-              This analysis aims to provide insights into the potential
-              consequences of climate change, empowering businesses to make
-              informed decisions, adapt to changing conditions, and contribute
-              to a sustainable future.
+              Evaluating the far-reaching consequences of climate change on
+              Canadian businesses in the 21st century, our analysis delves into
+              the mounting risks and challenges faced by diverse industries as
+              global temperatures soar and extreme weather events intensify. We
+              aim to deliver crucial insights into the potential ramifications
+              of climate change, equipping businesses with the knowledge to make
+              strategic decisions, adapt to the evolving landscape, and actively
+              participate in shaping a sustainable future.
             </p>
             <div className="mt-8 grid grid-cols-3 gap-4">
               <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg p-4 hover:shadow-lg transition-all duration-300 ease-in">
@@ -266,8 +266,7 @@ export default function Home() {
               </h2>
               <p className="text-xl mb-4">
                 Visualize the geographical distribution of climate risks in
-                Canada. Hover over regions to view risk ratings and click on
-                them to access more detailed information.
+                Canada. Hover over regions to view risk ratings.
               </p>
               <RiskMap data={data} />
             </div>
