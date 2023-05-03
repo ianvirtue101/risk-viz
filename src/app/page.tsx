@@ -55,7 +55,7 @@ export default function Home() {
           });
 
           return {
-            id: index, // Add the index as the id
+            id: index + 1, // Add the index as the id
             assetName: item["Asset Name"],
             lat: item.Lat,
             long: item.Long,
