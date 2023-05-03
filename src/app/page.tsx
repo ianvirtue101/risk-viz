@@ -10,6 +10,7 @@ import { DataItem } from "@/app/api/types";
 import TotalRiskFactorsByYear from "@/components/TotalRiskFactorByYear/TotalRiskFactorsByYear";
 import Navbar from "@/components/NavBar/NavBar";
 import Loading from "./loading";
+import Head from "./head";
 
 interface RiskFactor {
   [key: string]: number;
@@ -199,7 +200,8 @@ export default function Home() {
 
   return (
     <>
-      <div className="bg-hero-image bg-cover bg-center relative min-h-screen">
+      <main className="bg-hero-image bg-cover bg-center relative min-h-screen">
+        <Head />
         <div className="bg-black bg-opacity-60 min-h-screen flex items-center py-16">
           <div className="absolute top-0 left-0 w-full">
             <Navbar />
@@ -258,7 +260,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-      </div>
+      </main>
       <Suspense fallback={<Loading />}>
         <div className="w-full h-full p-4 md:p-8 bg-background">
           <div className="container mx-auto">
