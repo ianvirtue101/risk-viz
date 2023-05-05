@@ -17,6 +17,7 @@ interface RiskFactor {
 }
 
 interface SelectedDataPoint {
+  id: number;
   riskRating: number;
   assetName: string;
   riskFactors: RiskFactor;
@@ -31,6 +32,8 @@ export default function Home() {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedDataPoint, setSelectedDataPoint] =
     useState<SelectedDataPoint | null>(null);
+
+  const [selectedRow, setSelectedRow] = useState<number | null>(null);
 
   // Refs for scrolling functionality
   const mapRef: RefObject<HTMLHeadingElement> = useRef(null);
@@ -295,7 +298,7 @@ export default function Home() {
                 Visualize the geographical distribution of climate risks in
                 Canada. Hover over regions to view risk ratings.
               </p>
-              <RiskMap data={data} />
+              <RiskMap data={data} selectedDataPoint={selectedDataPoint} />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8">
               <div className="bg-white rounded-lg p-6 shadow-md">
@@ -364,7 +367,11 @@ export default function Home() {
                 information and gain a more granular understanding of climate
                 risk factors.
               </p>
-              <DataTable data={data} />
+              <DataTable
+                data={data}
+                selectedRow={selectedRow}
+                setSelectedRow={setSelectedRow}
+              />
             </div>
           </div>
         </div>

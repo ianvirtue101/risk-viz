@@ -61,6 +61,7 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
           <p class="font-medium">${item.businessCategory}</p>
           <p>Year: ${item.year}</p>
           <p>Risk Rating: ${item.riskRating.toFixed(2)}</p>
+          
         </div>
       `;
 

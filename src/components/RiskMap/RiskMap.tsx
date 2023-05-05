@@ -3,9 +3,18 @@ import MapBox from "../MapBox/MapBox";
 import { DataItem } from "../../app/api/types";
 import Pagination from "../Pagination/Pagination";
 
-type RiskMapProps = {
+interface RiskMapProps {
   data: DataItem[];
-};
+  selectedDataPoint: SelectedDataPoint | null;
+}
+
+interface SelectedDataPoint {
+  id: number;
+  riskRating: number;
+  assetName: string;
+  riskFactors: { [key: string]: number };
+  year: number;
+}
 
 // Define the number of items to display per page
 const itemsPerPage = 100;
@@ -19,7 +28,7 @@ function fetchPage(page: number, data: DataItem[]): DataItem[] {
 }
 
 // Define the RiskMap component
-const RiskMap: React.FC<RiskMapProps> = ({ data }) => {
+const RiskMap: React.FC<RiskMapProps> = ({ data, selectedDataPoint }) => {
   // Define the current page state
   const [currentPage, setCurrentPage] = useState(1);
 

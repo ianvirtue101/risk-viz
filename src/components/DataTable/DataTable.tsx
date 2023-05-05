@@ -5,9 +5,27 @@ import Pagination from "../Pagination/Pagination";
 
 interface DataTableProps {
   data: DataItem[];
+  selectedRow: number | null;
+  setSelectedRow: React.Dispatch<React.SetStateAction<number | null>>;
 }
+
+// Define the number of items to display per page
+const itemsPerPage = 100;
+
+// Function to fetch a specific page of data based on the provided page number and data array
+function fetchPage(page: number, data: DataItem[]): DataItem[] {
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  return data.slice(startIndex, endIndex);
+}
+
 // Define the DataTable component
-const DataTable: React.FC<DataTableProps> = ({ data }) => {
+const DataTable: React.FC<DataTableProps> = ({
+  data,
+  selectedRow,
+  setSelectedRow,
+}) => {
   // Define the filter term state
   const [filterTerm, setFilterTerm] = useState("");
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
@@ -23,7 +41,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 
   // State for pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Define the number of items per page
+  // const itemsPerPage = 10; // Define the number of items per page
 
   // Handler function for updating the current page
   const handlePageChange = (newPage: number) => {
@@ -105,6 +123,9 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 
   // Calculate the total number of pages
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  // // Fetch the data to display on the current page
+  // const displayedData = fetchPage(currentPage, data);
 
   return (
     <div>
@@ -188,7 +209,17 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
           </thead>
           <tbody>
             {dataToRender.map((item, index) => (
-              <tr key={item.id} className={index % 2 === 0 ? "bg-gray-50" : ""}>
+              <tr
+                key={item.id}
+                onClick={() => setSelectedRow(index)}
+                className={
+                  index === selectedRow
+                    ? "bg-blue-100"
+                    : index % 2 === 0
+                    ? "bg-gray-50"
+                    : ""
+                }
+              >
                 <td className="border p-2">{item.id}</td>
                 <td className="border p-2">{item.assetName}</td>
                 <td className="border p-2">{item.lat}</td>
