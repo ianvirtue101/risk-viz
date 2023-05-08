@@ -7,8 +7,10 @@ interface DataTableProps {
   data: DataItem[];
   selectedRow: number | null;
   setSelectedRow: React.Dispatch<React.SetStateAction<number | null>>;
+  SelectedDataPoint: SelectedDataPoint | null;
   onDataPointSelection: (dataPoint: SelectedDataPoint) => void;
   mapRef: React.RefObject<HTMLDivElement>;
+  setDecadeYear: (year: number) => void;
 }
 
 // Define the number of items to display per page
@@ -29,6 +31,7 @@ const DataTable: React.FC<DataTableProps> = ({
   setSelectedRow,
   onDataPointSelection,
   mapRef,
+  setDecadeYear,
 }) => {
   // Define the filter term state
   const [filterTerm, setFilterTerm] = useState("");
@@ -128,20 +131,18 @@ const DataTable: React.FC<DataTableProps> = ({
   // Calculate the total number of pages
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
+  // Handler function for row click
   const handleRowClick = (rowData: DataItem) => {
-    // onDataPointSelection({
-    //   id: rowData.id,
-    //   riskRating: rowData.riskRating,
-    //   assetName: rowData.assetName,
-    //   riskFactors: rowData.riskFactors,
-    //   year: rowData.year,
-    // });
-
+    const newDecadeYear = Math.floor(rowData.year / 10) * 10;
+    setDecadeYear(newDecadeYear);
     // Set the selected row
     setSelectedRow(rowData.id);
 
     // Call the onDataPointSelection function with the rowData
     onDataPointSelection(rowData);
+
+    console.log(rowData.id);
+    console.log(rowData);
 
     // Scroll to the map
     mapRef.current?.scrollIntoView({ behavior: "smooth" });

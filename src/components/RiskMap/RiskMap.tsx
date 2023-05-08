@@ -7,6 +7,8 @@ interface RiskMapProps {
   data: DataItem[];
   selectedDataPoint: SelectedDataPoint | null;
   dataTableRef: React.RefObject<HTMLDivElement>;
+  decadeYear: number;
+  setDecadeYear: (year: number) => void;
 }
 
 // Define the number of items to display per page
@@ -25,6 +27,8 @@ const RiskMap: React.FC<RiskMapProps> = ({
   data,
   selectedDataPoint,
   dataTableRef,
+  decadeYear,
+  setDecadeYear,
 }) => {
   // Define the current page state
   const [currentPage, setCurrentPage] = useState(1);
@@ -54,6 +58,10 @@ const RiskMap: React.FC<RiskMapProps> = ({
     setCurrentPage(newPage);
     setClickedDataPoint(dataPoint);
 
+    // Update the decadeYear in the MapBox component
+    const newDecadeYear = Math.floor(dataPoint.year / 10) * 10;
+    setDecadeYear(newDecadeYear);
+
     // push the selected data point to the top of the data table
     const updatedData = [...data];
     // remove the selected data point from the data array
@@ -65,11 +73,18 @@ const RiskMap: React.FC<RiskMapProps> = ({
     dataTableRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // confirm that selected data point has been received
+  console.log("selectedDataPoint", selectedDataPoint);
+
   return (
     <div className="w-full h-full">
       <MapBox
-        data={displayedData}
-        selectedDataPoint={clickedDataPoint}
+        // data={displayedData}
+        data={data}
+        // selectedDataPoint={clickedDataPoint}
+        selectedDataPoint={selectedDataPoint}
+        setDecadeYear={setDecadeYear}
+        decadeYear={decadeYear}
         onDataPointSelection={handleDataPointSelection}
       />
 

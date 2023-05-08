@@ -17,14 +17,6 @@ interface RiskFactor {
   [key: string]: number;
 }
 
-// interface SelectedDataPoint {
-//   id: number;
-//   riskRating: number;
-//   assetName: string;
-//   riskFactors: RiskFactor;
-//   year: number;
-// }
-
 // Define the main Home component
 export default function Home() {
   // State variables
@@ -35,6 +27,8 @@ export default function Home() {
     useState<SelectedDataPoint | null>(null);
 
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
+
+  const [decadeYear, setDecadeYear] = useState(2030);
 
   // Refs for scrolling functionality
   const mapRef: RefObject<HTMLHeadingElement> = useRef(null);
@@ -205,10 +199,17 @@ export default function Home() {
 
   // function to receive the selected data point from the DataTable component
   const handleDataPointSelection = (dataPoint: SelectedDataPoint) => {
-    console.log(dataPoint);
     // Set the selected data point in the state
     setSelectedDataPoint(dataPoint);
+
+    // Scroll to the map section when the data point is selected
+    if (mapRef.current) {
+      mapRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
+
+  // console log all data coming form dataTable component ONLY
+  console.log("dataPoint", selectedDataPoint);
 
   return (
     <>
@@ -313,6 +314,8 @@ export default function Home() {
                 // Pass the selected data point to the RiskMap component
                 selectedDataPoint={selectedDataPoint}
                 dataTableRef={dataTableRef}
+                decadeYear={decadeYear}
+                setDecadeYear={setDecadeYear}
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8">
@@ -389,6 +392,8 @@ export default function Home() {
                 data={data}
                 selectedRow={selectedRow}
                 setSelectedRow={setSelectedRow}
+                SelectedDataPoint={selectedDataPoint}
+                setDecadeYear={setDecadeYear}
                 onDataPointSelection={handleDataPointSelection}
                 mapRef={mapRef}
               />
