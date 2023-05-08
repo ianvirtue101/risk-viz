@@ -1,14 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import mapboxgl, { Marker, Popup } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { DataItem } from "../../app/api/types";
+import { DataItem, SelectedDataPoint } from "../../app/api/types";
 
 interface MapBoxProps {
   data: DataItem[];
+  selectedDataPoint: SelectedDataPoint | null;
+  onDataPointSelection: (dataPoint: SelectedDataPoint) => void;
 }
 
 // Define the MapBox component
-const MapBox: React.FC<MapBoxProps> = ({ data }) => {
+const MapBox: React.FC<MapBoxProps> = ({
+  data,
+  selectedDataPoint,
+  onDataPointSelection,
+}) => {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<Marker[]>([]);
   const [decadeYear, setDecadeYear] = useState(2030);
@@ -42,10 +48,16 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
     const createMarkerElements = (item: DataItem) => {
       const markerElement = document.createElement("div");
       markerElement.className = "marker"; // CSS class to style the marker
-      markerElement.style.width = "10px";
-      markerElement.style.height = "10px";
-      markerElement.style.borderRadius = "50%";
+      if (selectedDataPoint && item.id === selectedDataPoint.id) {
+        markerElement.style.width = "20px";
+        markerElement.style.height = "20px";
+        markerElement.style.border = "2px solid white";
+      } else {
+        markerElement.style.width = "10px";
+        markerElement.style.height = "10px";
+      }
 
+      // Set the marker color based on the risk rating
       if (item.riskRating < 0.25) {
         markerElement.style.backgroundColor = "green";
       } else if (item.riskRating < 0.5) {
@@ -84,6 +96,38 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
         marker.getPopup()?.remove(); // Remove the popup
       });
 
+      // Add event listener to select the data point when the user clicks on the marker
+      markerElement.addEventListener("click", () => {
+        // Send the selected data point to the parent component
+        onDataPointSelection({
+          id: item.id,
+          riskRating: item.riskRating,
+          assetName: item.assetName,
+          riskFactors: item.riskFactors,
+          businessCategory: item.businessCategory,
+          year: item.year,
+          lat: item.lat,
+          long: item.long,
+        });
+
+        // console.log("clicked");
+      });
+
+      //
+      markerElement.addEventListener("click", () => {
+        // Send the selected data point to the parent component
+        onDataPointSelection({
+          id: item.id,
+          riskRating: item.riskRating,
+          assetName: item.assetName,
+          riskFactors: item.riskFactors,
+          businessCategory: item.businessCategory,
+          year: item.year,
+          lat: item.lat,
+          long: item.long,
+        });
+      });
+
       markersRef.current.push(marker);
     };
 
@@ -115,7 +159,7 @@ const MapBox: React.FC<MapBoxProps> = ({ data }) => {
       });
       markersRef.current = [];
     };
-  }, [mapRef, data, decadeYear]);
+  }, [mapRef, data, decadeYear, selectedDataPoint]);
 
   // Update the decadeYear state when the user selects a different decade
   const handleDecadeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

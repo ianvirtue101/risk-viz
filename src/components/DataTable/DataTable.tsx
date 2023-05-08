@@ -1,12 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { DataItem } from "../../app/api/types";
+import { DataItem, SelectedDataPoint } from "../../app/api/types";
 import Pagination from "../Pagination/Pagination";
 
 interface DataTableProps {
   data: DataItem[];
   selectedRow: number | null;
   setSelectedRow: React.Dispatch<React.SetStateAction<number | null>>;
+  onDataPointSelection: (dataPoint: SelectedDataPoint) => void;
+  mapRef: React.RefObject<HTMLDivElement>;
 }
 
 // Define the number of items to display per page
@@ -25,6 +27,8 @@ const DataTable: React.FC<DataTableProps> = ({
   data,
   selectedRow,
   setSelectedRow,
+  onDataPointSelection,
+  mapRef,
 }) => {
   // Define the filter term state
   const [filterTerm, setFilterTerm] = useState("");
@@ -124,8 +128,24 @@ const DataTable: React.FC<DataTableProps> = ({
   // Calculate the total number of pages
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  // // Fetch the data to display on the current page
-  // const displayedData = fetchPage(currentPage, data);
+  const handleRowClick = (rowData: DataItem) => {
+    // onDataPointSelection({
+    //   id: rowData.id,
+    //   riskRating: rowData.riskRating,
+    //   assetName: rowData.assetName,
+    //   riskFactors: rowData.riskFactors,
+    //   year: rowData.year,
+    // });
+
+    // Set the selected row
+    setSelectedRow(rowData.id);
+
+    // Call the onDataPointSelection function with the rowData
+    onDataPointSelection(rowData);
+
+    // Scroll to the map
+    mapRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <div>
@@ -211,7 +231,10 @@ const DataTable: React.FC<DataTableProps> = ({
             {dataToRender.map((item, index) => (
               <tr
                 key={item.id}
-                onClick={() => setSelectedRow(index)}
+                onClick={() => {
+                  setSelectedRow(index);
+                  handleRowClick(item);
+                }}
                 className={
                   index === selectedRow
                     ? "bg-blue-100"
@@ -220,7 +243,7 @@ const DataTable: React.FC<DataTableProps> = ({
                     : ""
                 }
               >
-                <td className="border p-2">{item.id}</td>
+                <td className="border p-2">{item.id + 1}</td>
                 <td className="border p-2">{item.assetName}</td>
                 <td className="border p-2">{item.lat}</td>
                 <td className="border p-2">{item.long}</td>

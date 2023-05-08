@@ -1,19 +1,12 @@
 import React, { useState } from "react";
 import MapBox from "../MapBox/MapBox";
-import { DataItem } from "../../app/api/types";
+import { DataItem, SelectedDataPoint } from "../../app/api/types";
 import Pagination from "../Pagination/Pagination";
 
 interface RiskMapProps {
   data: DataItem[];
   selectedDataPoint: SelectedDataPoint | null;
-}
-
-interface SelectedDataPoint {
-  id: number;
-  riskRating: number;
-  assetName: string;
-  riskFactors: { [key: string]: number };
-  year: number;
+  dataTableRef: React.RefObject<HTMLDivElement>;
 }
 
 // Define the number of items to display per page
@@ -28,9 +21,16 @@ function fetchPage(page: number, data: DataItem[]): DataItem[] {
 }
 
 // Define the RiskMap component
-const RiskMap: React.FC<RiskMapProps> = ({ data, selectedDataPoint }) => {
+const RiskMap: React.FC<RiskMapProps> = ({
+  data,
+  selectedDataPoint,
+  dataTableRef,
+}) => {
   // Define the current page state
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [clickedDataPoint, setClickedDataPoint] =
+    useState<SelectedDataPoint | null>(null);
 
   // Calculate the total number of pages
   const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -43,9 +43,36 @@ const RiskMap: React.FC<RiskMapProps> = ({ data, selectedDataPoint }) => {
   // Fetch the data to display on the current page
   const displayedData = fetchPage(currentPage, data);
 
+  // function to receive the selected data point from the MapBox component
+  const handleDataPointSelection = (dataPoint: SelectedDataPoint) => {
+    // find the index of the selected data point in the data array
+    const dataIndex = data.findIndex((item) => item.id === dataPoint.id);
+    // calculate the page that the selected data point is on
+    const newPage = Math.ceil((dataIndex + 1) / itemsPerPage);
+
+    // update the current page and selected data point states
+    setCurrentPage(newPage);
+    setClickedDataPoint(dataPoint);
+
+    // push the selected data point to the top of the data table
+    const updatedData = [...data];
+    // remove the selected data point from the data array
+    updatedData.splice(dataIndex, 1);
+    // add the selected data point to the top of the data array
+    updatedData.unshift(dataPoint);
+
+    // scroll to the data table ref
+    dataTableRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="w-full h-full">
-      <MapBox data={displayedData} />
+      <MapBox
+        data={displayedData}
+        selectedDataPoint={clickedDataPoint}
+        onDataPointSelection={handleDataPointSelection}
+      />
+
       <Pagination
         totalPages={totalPages}
         currentPage={currentPage}

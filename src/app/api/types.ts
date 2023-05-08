@@ -9,3 +9,14 @@ export interface DataItem {
   riskFactors: { [key: string]: number };
   year: number;
 }
+
+export interface SelectedDataPoint {
+  id: number;
+  riskRating: number;
+  assetName: string;
+  lat: number;
+  long: number;
+  businessCategory: string;
+  riskFactors: { [key: string]: number };
+  year: number;
+}

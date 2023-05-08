@@ -7,6 +7,7 @@ import BarChart from "@/components/BarChart/BarChart";
 import PieChart from "@/components/PieChart/PieChart";
 import { fetchDataFromStorage } from "@/app/utils/fetchDataFromStorage";
 import { DataItem } from "@/app/api/types";
+import { SelectedDataPoint } from "@/app/api/types";
 import TotalRiskFactorsByYear from "@/components/TotalRiskFactorByYear/TotalRiskFactorsByYear";
 import Navbar from "@/components/NavBar/NavBar";
 import Loading from "./loading";
@@ -16,13 +17,13 @@ interface RiskFactor {
   [key: string]: number;
 }
 
-interface SelectedDataPoint {
-  id: number;
-  riskRating: number;
-  assetName: string;
-  riskFactors: RiskFactor;
-  year: number;
-}
+// interface SelectedDataPoint {
+//   id: number;
+//   riskRating: number;
+//   assetName: string;
+//   riskFactors: RiskFactor;
+//   year: number;
+// }
 
 // Define the main Home component
 export default function Home() {
@@ -38,6 +39,7 @@ export default function Home() {
   // Refs for scrolling functionality
   const mapRef: RefObject<HTMLHeadingElement> = useRef(null);
   const dataRef: RefObject<HTMLHeadingElement> = useRef(null);
+  const dataTableRef = useRef<HTMLDivElement>(null);
 
   // Fetch and process the data on component mount
   useEffect(() => {
@@ -59,7 +61,7 @@ export default function Home() {
           });
 
           return {
-            id: index + 1, // Add the index as the id
+            id: index, // Add the index as the id
             assetName: item["Asset Name"],
             lat: item.Lat,
             long: item.Long,
@@ -201,6 +203,13 @@ export default function Home() {
     }
   };
 
+  // function to receive the selected data point from the DataTable component
+  const handleDataPointSelection = (dataPoint: SelectedDataPoint) => {
+    console.log(dataPoint);
+    // Set the selected data point in the state
+    setSelectedDataPoint(dataPoint);
+  };
+
   return (
     <>
       <main className="bg-hero-image bg-cover bg-center relative min-h-screen">
@@ -291,6 +300,7 @@ export default function Home() {
               <h2
                 className="text-2xl font-semibold text-primary-600 mb-4"
                 ref={mapRef}
+                id="risk-map"
               >
                 Climate Risk Map
               </h2>
@@ -298,7 +308,12 @@ export default function Home() {
                 Visualize the geographical distribution of climate risks in
                 Canada. Hover over regions to view risk ratings.
               </p>
-              <RiskMap data={data} selectedDataPoint={selectedDataPoint} />
+              <RiskMap
+                data={data}
+                // Pass the selected data point to the RiskMap component
+                selectedDataPoint={selectedDataPoint}
+                dataTableRef={dataTableRef}
+              />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8">
               <div className="bg-white rounded-lg p-6 shadow-md">
@@ -358,7 +373,10 @@ export default function Home() {
             </div>
 
             <div className="bg-white rounded-lg p-6 shadow-md mb-8">
-              <h1 className="text-2xl font-semibold text-primary-600 mb-4">
+              <h1
+                className="text-2xl font-semibold text-primary-600 mb-4"
+                ref={dataTableRef}
+              >
                 Climate Risk Data Table
               </h1>
               <p className="text-xl mb-4">
@@ -371,6 +389,8 @@ export default function Home() {
                 data={data}
                 selectedRow={selectedRow}
                 setSelectedRow={setSelectedRow}
+                onDataPointSelection={handleDataPointSelection}
+                mapRef={mapRef}
               />
             </div>
           </div>
