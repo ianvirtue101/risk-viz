@@ -90,7 +90,9 @@ const MapBox: React.FC<MapBoxProps> = ({
           <p class="font-medium">${item.businessCategory}</p>
           <p>Year: ${item.year}</p>
           <p>Risk Rating: ${item.riskRating.toFixed(2)}</p>
-          
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <a href="#${item.id}">View Details</a>
+          </button>
         </div>
       `;
 
@@ -108,10 +110,20 @@ const MapBox: React.FC<MapBoxProps> = ({
         marker.setPopup(popup).togglePopup(); // Show the popup
       });
 
-      // Remove the popup when the mouse leaves the marker
-      markerElement.addEventListener("mouseleave", () => {
-        marker.getPopup()?.remove(); // Remove the popup
+      // if the user is hovering over the marker or the popup, keep the popup open
+      markerElement.addEventListener("mouseover", () => {
+        marker.setPopup(popup).togglePopup();
       });
+
+      // one the user is not hovering over the popup or the marker, remove the popup
+      markerElement.addEventListener("mouseleave", () => {
+        marker.getPopup()?.remove();
+      });
+
+      // remove the popup when the mouse is not hovering over the marker or the popup
+      // markerElement.addEventListener("mouseleave", () => {
+      //   marker.getPopup()?.remove();
+      // });
 
       // Add event listener to select the data point when the user clicks on the marker
       markerElement.addEventListener("click", () => {
