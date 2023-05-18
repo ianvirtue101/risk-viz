@@ -9,6 +9,9 @@ interface RiskMapProps {
   dataTableRef: React.RefObject<HTMLDivElement>;
   decadeYear: number;
   setDecadeYear: (year: number) => void;
+
+  selectedMarkers: number | null;
+  setSelectedMarkers: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 // Define the number of items to display per page
@@ -29,6 +32,8 @@ const RiskMap: React.FC<RiskMapProps> = ({
   dataTableRef,
   decadeYear,
   setDecadeYear,
+  selectedMarkers,
+  setSelectedMarkers,
 }) => {
   // Define the current page state
   const [currentPage, setCurrentPage] = useState(1);
@@ -73,26 +78,29 @@ const RiskMap: React.FC<RiskMapProps> = ({
     dataTableRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // confirm that selected data point has been received
-  console.log("selectedDataPoint", selectedDataPoint);
+  //
 
   return (
     <div className="w-full h-full">
       <MapBox
         // data={displayedData}
         data={data}
-        // selectedDataPoint={clickedDataPoint}
         selectedDataPoint={selectedDataPoint}
         setDecadeYear={setDecadeYear}
         decadeYear={decadeYear}
         onDataPointSelection={handleDataPointSelection}
+        // pass data table ref to mapbox component
+        dataTableRef={dataTableRef}
+        // pass selected marker state to mapbox component
+        selectedMarkers={selectedMarkers}
+        setSelectedMarkers={setSelectedMarkers}
       />
 
-      <Pagination
+      {/* <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
         onPageChange={handlePageChange}
-      />
+      /> */}
     </div>
   );
 };

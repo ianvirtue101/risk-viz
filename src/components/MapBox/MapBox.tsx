@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import mapboxgl, { Marker, Popup } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { DataItem, SelectedDataPoint } from "../../app/api/types";
+import { on } from "events";
 
 interface MapBoxProps {
   data: DataItem[];
@@ -9,6 +10,9 @@ interface MapBoxProps {
   onDataPointSelection: (dataPoint: SelectedDataPoint) => void;
   setDecadeYear: (year: number) => void;
   decadeYear: number;
+  dataTableRef: React.RefObject<HTMLDivElement>;
+  selectedMarkers: number | null;
+  setSelectedMarkers: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 // Define the MapBox component
@@ -18,6 +22,9 @@ const MapBox: React.FC<MapBoxProps> = ({
   onDataPointSelection,
   setDecadeYear,
   decadeYear,
+  dataTableRef,
+  selectedMarkers,
+  setSelectedMarkers,
 }) => {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<Marker[]>([]);
@@ -127,6 +134,8 @@ const MapBox: React.FC<MapBoxProps> = ({
 
       // Add event listener to select the data point when the user clicks on the marker
       markerElement.addEventListener("click", () => {
+        // set selectedMarkers to the item.id
+        setSelectedMarkers(item.id);
         // Send the selected data point to the parent component
         onDataPointSelection({
           id: item.id,
@@ -137,6 +146,13 @@ const MapBox: React.FC<MapBoxProps> = ({
           year: item.year,
           lat: item.lat,
           long: item.long,
+        });
+
+        // once a marker is selected scroll to the details section with the matching id
+        dataTableRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
         });
 
         // Update the marker size when the selectedDataPoint changes

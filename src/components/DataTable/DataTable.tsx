@@ -11,6 +11,7 @@ interface DataTableProps {
   onDataPointSelection: (dataPoint: SelectedDataPoint) => void;
   mapRef: React.RefObject<HTMLDivElement>;
   setDecadeYear: (year: number) => void;
+  selectedMarkers: number | null;
 }
 
 // Define the number of items to display per page
@@ -32,6 +33,7 @@ const DataTable: React.FC<DataTableProps> = ({
   onDataPointSelection,
   mapRef,
   setDecadeYear,
+  selectedMarkers,
 }) => {
   // Define the filter term state
   const [filterTerm, setFilterTerm] = useState("");
@@ -141,12 +143,16 @@ const DataTable: React.FC<DataTableProps> = ({
     // Call the onDataPointSelection function with the rowData
     onDataPointSelection(rowData);
 
-    console.log(rowData.id);
-    console.log(rowData);
+    // console.log(rowData.id);
+    // console.log(rowData);
 
     // Scroll to the map
     mapRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+
+
+
 
   return (
     <div>
@@ -237,7 +243,7 @@ const DataTable: React.FC<DataTableProps> = ({
                   handleRowClick(item);
                 }}
                 className={
-                  index === selectedRow
+                  index === selectedRow || index === selectedMarkers
                     ? "bg-blue-100"
                     : index % 2 === 0
                     ? "bg-gray-50"

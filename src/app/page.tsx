@@ -28,6 +28,9 @@ export default function Home() {
 
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
 
+  // selected markers
+  const [selectedMarkers, setSelectedMarkers] = useState<number | null>(null);
+
   const [decadeYear, setDecadeYear] = useState(2030);
 
   // Refs for scrolling functionality
@@ -206,10 +209,12 @@ export default function Home() {
     if (mapRef.current) {
       mapRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  };
 
-  // console log all data coming form dataTable component ONLY
-  console.log("dataPoint", selectedDataPoint);
+    // scroll to the dataTable section when the data point is selected
+    if (dataTableRef.current) {
+      dataTableRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <>
@@ -316,6 +321,8 @@ export default function Home() {
                 dataTableRef={dataTableRef}
                 decadeYear={decadeYear}
                 setDecadeYear={setDecadeYear}
+                selectedMarkers={selectedMarkers}
+                setSelectedMarkers={setSelectedMarkers}
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8">
@@ -396,6 +403,7 @@ export default function Home() {
                 setDecadeYear={setDecadeYear}
                 onDataPointSelection={handleDataPointSelection}
                 mapRef={mapRef}
+                selectedMarkers={selectedMarkers}
               />
             </div>
           </div>
